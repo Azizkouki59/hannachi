@@ -1,13 +1,31 @@
+"use client";
 import Link from "next/link";
 import { ArrowRight, Quote, Star } from "lucide-react";
 import type { Review, Service } from "@/data/site";
 import { serviceIcons } from "./Illustrations";
+import { ApplianceGraphic } from "./AnimatedAppliances";
 
-export function SectionHeading({ title, subtitle, light = false, className = "" }: { title: string; subtitle?: string; light?: boolean; className?: string }) {
+export function SectionHeading({
+  title,
+  subtitle,
+  light = false,
+  className = "",
+}: {
+  title: string;
+  subtitle?: string;
+  light?: boolean;
+  className?: string;
+}) {
   return (
     <div className={`max-w-2xl ${className}`}>
-      <h2 className={`text-3xl font-extrabold leading-[1.1] sm:text-4xl lg:text-[44px] ${light ? "text-white" : "text-primary"}`}>{title}</h2>
-      {subtitle && <p className={`mt-4 text-lg leading-relaxed ${light ? "text-white/70" : "text-ink-muted"}`}>{subtitle}</p>}
+      <h2 className={`text-3xl font-extrabold leading-[1.1] sm:text-4xl lg:text-[44px] ${light ? "text-white" : "text-primary"}`}>
+        {title}
+      </h2>
+      {subtitle && (
+        <p className={`mt-4 text-lg leading-relaxed ${light ? "text-white/70" : "text-ink-muted"}`}>
+          {subtitle}
+        </p>
+      )}
     </div>
   );
 }
@@ -15,7 +33,11 @@ export function SectionHeading({ title, subtitle, light = false, className = "" 
 export function PageHeader({ title, intro }: { title: string; intro?: string }) {
   return (
     <section className="relative overflow-hidden bg-hero-gradient text-white">
-      <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "32px 32px" }}
+      />
       <div aria-hidden className="pointer-events-none absolute -top-24 right-0 h-72 w-72 rounded-full bg-accent/20 blur-3xl" />
       <div className="container-page relative py-16 sm:py-24">
         <h1 className="max-w-3xl text-4xl font-extrabold leading-[1.05] sm:text-5xl lg:text-6xl">{title}</h1>
@@ -31,10 +53,20 @@ export function ServiceCard({ service }: { service: Service }) {
   return (
     <Link
       href={`/leistungen/${service.slug}`}
-      className="card group flex flex-col overflow-hidden"
+      className="card group flex flex-col overflow-hidden bg-white"
     >
-      <div className="flex aspect-[4/3] items-center justify-center bg-primary text-white/90 transition-colors duration-300 group-hover:bg-primary-dark group-hover:text-accent">
-        <Icon className="h-32 w-32 transition-transform duration-300 group-hover:scale-110" />
+      <div className="relative flex aspect-[4/3] items-center justify-center bg-gradient-to-b from-sky-50/70 via-white to-slate-50 p-2 border-b border-primary/5">
+        <ApplianceGraphic slug={service.slug} size="sm" />
+        <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between pointer-events-none">
+          <span className="inline-flex items-center gap-1 rounded-md bg-white/95 px-2 py-0.5 text-[11px] font-bold text-primary shadow-xs backdrop-blur-sm">
+            <Icon className="h-3 w-3 text-accent" />
+            {service.title}
+          </span>
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-accent bg-accent/10 px-2 py-0.5 rounded-full">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+            Live
+          </span>
+        </div>
       </div>
       <div className="flex flex-1 flex-col p-6">
         <h3 className="text-lg font-bold text-primary">{service.title}</h3>

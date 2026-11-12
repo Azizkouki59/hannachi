@@ -1,9 +1,10 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
   Phone, Star, ArrowRight, CheckCircle2, Shield, Clock3,
-  UserRound, Handshake, Wrench, Zap, Award, MessageCircle, Quote,
+  UserRound, Handshake, Wrench, Zap, Award, MessageCircle, Quote, Sparkles,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import {
@@ -13,6 +14,11 @@ import {
 import { SectionHeading } from "@/components/ui";
 import { business, brands, reviews, services, yearsOfExperience } from "@/data/site";
 import { serviceIcons } from "@/components/Illustrations";
+import {
+  InteractiveApplianceShowcase,
+  FloatingHeroMascot,
+  ApplianceGraphic,
+} from "@/components/AnimatedAppliances";
 import HowItWorks from "./HowItWorks";
 import ContactCta from "./ContactCta";
 
@@ -66,6 +72,8 @@ const stats = [
 
 /* ─── Component ─── */
 export default function HomepageClient() {
+  const [applianceView, setApplianceView] = useState<"cartoon" | "photo">("cartoon");
+
   return (
     <>
       {/* ══════════════════════════════════════════════
@@ -214,6 +222,11 @@ export default function HomepageClient() {
                   <span className="text-xs font-bold text-primary">5.0</span>
                 </div>
               </GlassBadge>
+
+              {/* Floating Cartoon Washer Mascot */}
+              <div className="absolute -bottom-8 -right-6 hidden sm:block z-30">
+                <FloatingHeroMascot />
+              </div>
             </div>
           </div>
         </div>
@@ -288,12 +301,42 @@ export default function HomepageClient() {
                   subtitle="Kompetente Hilfe für Ihre Haushaltsgeräte — schnell, fair und persönlich."
                 />
               </div>
-              <Link href="/leistungen" className="btn-ghost shrink-0">
-                Alle Leistungen <ArrowRight size={16} />
-              </Link>
+
+              {/* View switcher & link */}
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="inline-flex rounded-xl bg-white p-1 border border-primary/10 shadow-xs">
+                  <button
+                    type="button"
+                    onClick={() => setApplianceView("cartoon")}
+                    className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+                      applianceView === "cartoon"
+                        ? "bg-accent text-white shadow-xs"
+                        : "text-ink-muted hover:text-primary"
+                    }`}
+                  >
+                    <Sparkles size={13} />
+                    Cartoon-Modus
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setApplianceView("photo")}
+                    className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+                      applianceView === "photo"
+                        ? "bg-accent text-white shadow-xs"
+                        : "text-ink-muted hover:text-primary"
+                    }`}
+                  >
+                    📷 Fotos
+                  </button>
+                </div>
+                <Link href="/leistungen" className="btn-ghost shrink-0 !py-2.5 !px-4 text-xs">
+                  Alle Details <ArrowRight size={14} />
+                </Link>
+              </div>
             </div>
           </FadeUp>
 
+          {/* 4 Cards Grid */}
           <StaggerContainer className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {services.map((s) => {
               const Icon = serviceIcons[s.slug];
@@ -303,11 +346,25 @@ export default function HomepageClient() {
                   <MagneticHover>
                     <Link
                       href={`/leistungen/${s.slug}`}
-                      className="card group flex flex-col overflow-hidden"
+                      className="card group flex flex-col overflow-hidden bg-white"
                     >
-                      {/* Photo or icon */}
-                      <div className="relative aspect-[4/3] overflow-hidden bg-primary">
-                        {photo ? (
+                      {/* Photo or Cartoon Animation */}
+                      <div className="relative aspect-[4/3] overflow-hidden">
+                        {applianceView === "cartoon" ? (
+                          <div className="flex h-full w-full items-center justify-center bg-gradient-to-b from-sky-50/70 via-white to-slate-50 p-2 border-b border-primary/5">
+                            <ApplianceGraphic slug={s.slug} size="sm" />
+                            <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between pointer-events-none">
+                              <span className="inline-flex items-center gap-1 rounded-md bg-white/95 px-2 py-0.5 text-[11px] font-bold text-primary shadow-xs backdrop-blur-sm">
+                                <Icon className="h-3 w-3 text-accent" />
+                                {s.title}
+                              </span>
+                              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-accent bg-accent/10 px-2 py-0.5 rounded-full">
+                                <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+                                Live
+                              </span>
+                            </div>
+                          </div>
+                        ) : photo ? (
                           <>
                             <Image
                               src={photo}
@@ -316,9 +373,7 @@ export default function HomepageClient() {
                               className="object-cover transition-transform duration-700 group-hover:scale-110"
                               sizes="(min-width:1024px) 25vw, 50vw"
                             />
-                            {/* Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/80 via-primary-dark/20 to-transparent" />
-                            {/* Title pill on photo */}
                             <div className="absolute bottom-3 left-3 right-3">
                               <span className="inline-flex items-center gap-1.5 rounded-lg bg-white/90 px-3 py-1.5 text-xs font-bold text-primary backdrop-blur-sm shadow-sm">
                                 <Icon className="h-3.5 w-3.5" />
@@ -348,6 +403,22 @@ export default function HomepageClient() {
               );
             })}
           </StaggerContainer>
+
+          {/* Interactive Appliance Showcase / Labor */}
+          <div className="mt-16">
+            <FadeUp>
+              <div className="mb-6 text-center">
+                <span className="eyebrow mb-2 block">Interaktiver Fehler-Finder</span>
+                <h3 className="text-2xl font-extrabold text-primary sm:text-3xl">
+                  Testen Sie unsere animierten Maschinen
+                </h3>
+                <p className="mt-2 text-sm text-ink-muted">
+                  Wählen Sie ein Gerät aus und sehen Sie, wie die Technik funktioniert und was wir reparieren.
+                </p>
+              </div>
+              <InteractiveApplianceShowcase />
+            </FadeUp>
+          </div>
         </div>
       </section>
 
@@ -546,3 +617,4 @@ export default function HomepageClient() {
     </>
   );
 }
+
