@@ -87,6 +87,7 @@ export default function HomepageClient() {
             alt=""
             fill
             priority
+            quality={90}
             className="object-cover object-center opacity-[0.18]"
             sizes="100vw"
           />
@@ -171,25 +172,27 @@ export default function HomepageClient() {
           </div>
 
           {/* ── Right: hero image ── */}
-          <div className="relative z-10 mx-auto w-full max-w-sm lg:col-span-5 lg:mx-0 lg:max-w-none">
+          <div className="relative z-10 mx-auto w-full max-w-md lg:col-span-5 lg:mx-0 lg:max-w-none">
             <div className="relative">
-              {/* Main photo */}
+              {/* Main photo — wide workshop view with full sharpness */}
               <div className="relative overflow-hidden rounded-3xl ring-1 ring-white/12 shadow-[0_32px_80px_rgba(0,0,0,.5)]">
                 <Image
                   src="/images/werkstatt.jpg"
                   alt="Herr Hannachi in seiner Werkstatt – professionelle Gerätereparatur"
-                  width={640}
+                  width={1200}
                   height={800}
                   priority
-                  className="aspect-[4/5] w-full object-cover object-top"
+                  quality={98}
+                  sizes="(min-width: 1024px) 540px, (min-width: 640px) 480px, 92vw"
+                  className="aspect-[16/11] w-full object-cover object-center"
                 />
                 {/* Bottom gradient on photo */}
-                <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/70 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/70 via-transparent to-transparent pointer-events-none" />
                 {/* Photo caption */}
                 <div className="absolute bottom-4 left-4 right-4">
-                  <div className="rounded-xl border border-white/15 bg-primary-dark/70 px-4 py-2.5 backdrop-blur-sm">
-                    <p className="text-xs font-semibold text-white/90">Werkstatt Hannachi · Osnabrück</p>
-                    <p className="text-[11px] text-white/50">Reparatur vor Ort & in der Werkstatt</p>
+                  <div className="rounded-xl border border-white/15 bg-primary-dark/80 px-4 py-2.5 backdrop-blur-md">
+                    <p className="text-xs font-semibold text-white/95">Werkstatt Hannachi · Osnabrück</p>
+                    <p className="text-[11px] text-white/60">Reparatur vor Ort & in der Meisterwerkstatt</p>
                   </div>
                 </div>
               </div>

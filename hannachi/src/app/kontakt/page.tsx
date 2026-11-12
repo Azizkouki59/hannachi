@@ -45,10 +45,59 @@ export default function Kontakt({ searchParams }: { searchParams: { geraet?: str
                   <br />
                   {business.zip} {business.city}
                 </address>
+                <a
+                  href={business.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-accent hover:underline"
+                >
+                  Auf Google Maps ansehen (Route) →
+                </a>
               </ContactItem>
               <ContactItem icon={Clock} title="Termine">
                 <span className="text-[14px]">{business.hours}</span>
               </ContactItem>
+            </div>
+
+            {/* Embedded Google Maps Card */}
+            <div className="card overflow-hidden">
+              <div className="flex items-center justify-between border-b border-primary/8 p-4 pb-3">
+                <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-ink-faint">
+                  <MapPin size={14} className="text-accent" />
+                  Standort &amp; Anfahrt
+                </span>
+                <a
+                  href={business.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-accent hover:underline"
+                >
+                  Route planen →
+                </a>
+              </div>
+              <div className="relative aspect-[16/10] w-full bg-surface">
+                <iframe
+                  title="Hannachi Standort Osnabrück auf Google Maps"
+                  src={business.mapsEmbedUrl}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="h-full w-full"
+                />
+              </div>
+              <div className="flex items-center justify-between bg-surface p-3.5 text-xs text-ink-muted">
+                <span>{business.street}, {business.zip} {business.city}</span>
+                <a
+                  href={business.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold text-primary hover:text-accent transition-colors"
+                >
+                  In Maps öffnen ↗
+                </a>
+              </div>
             </div>
           </aside>
           <div id="anfrage" className="scroll-mt-28 lg:col-span-8">

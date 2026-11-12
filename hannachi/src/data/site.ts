@@ -18,6 +18,12 @@ export const business = {
   email: null as string | null,
   vatId: null as string | null,
   url: "https://hannachi.de",
+  mapsUrl: "https://www.google.com/maps/place/Hannachi+Elektrohaushaltsger%C3%A4te+Service/@52.2902275,8.0207428,17z/data=!3m1!4b1!4m6!3m5!1s0x47b9e5bf477f10fd:0x1f80e75886e37b1e!8m2!3d52.2902275!4d8.0207428!16s%2Fg%2F1tfhfj72",
+  mapsEmbedUrl: "https://maps.google.com/maps?q=Hannachi+Elektrohaushaltsger%C3%A4te+Service,+Iburger+Stra%C3%9Fe+5,+49082+Osnabr%C3%BCck&t=&z=16&ie=UTF8&iwloc=&output=embed",
+  coordinates: {
+    lat: 52.2902275,
+    lng: 8.0207428,
+  },
 };
 
 export const yearsOfExperience = new Date().getFullYear() - business.founded;

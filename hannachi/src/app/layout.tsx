@@ -27,7 +27,19 @@ const jsonLd = {
   url: business.url,
   telephone: "+491703493494",
   foundingDate: String(business.founded),
-  address: { "@type": "PostalAddress", streetAddress: "Iburger Straße 5", postalCode: business.zip, addressLocality: business.city, addressCountry: "DE" },
+  hasMap: business.mapsUrl,
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: business.coordinates.lat,
+    longitude: business.coordinates.lng,
+  },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: business.street,
+    postalCode: business.zip,
+    addressLocality: business.city,
+    addressCountry: "DE",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -36,10 +36,21 @@ export default function Footer() {
         <div className="md:col-span-3">
           <h2 className="text-sm font-semibold text-white">Kontakt</h2>
           <address className="mt-4 space-y-3 text-[14px] not-italic leading-relaxed">
-            <p className="flex items-start gap-2">
+            <div className="flex items-start gap-2">
               <MapPin size={15} className="mt-0.5 shrink-0 text-accent" />
-              <span>{business.street}<br />{business.zip} {business.city}</span>
-            </p>
+              <a
+                href={business.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-accent transition-colors group"
+                title="Standort auf Google Maps öffnen"
+              >
+                <span>{business.street}<br />{business.zip} {business.city}</span>
+                <span className="block text-xs font-semibold text-accent/80 group-hover:text-accent mt-0.5">
+                  Auf Google Maps öffnen →
+                </span>
+              </a>
+            </div>
             <p className="flex items-center gap-2">
               <Phone size={15} className="shrink-0 text-accent" />
               <a href={business.phoneHref} className="hover:text-accent transition-colors">{business.phoneDisplay}</a>
