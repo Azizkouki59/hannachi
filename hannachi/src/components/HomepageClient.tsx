@@ -16,6 +16,7 @@ import { SectionHeading } from "@/components/ui";
 import {
   business, brands, reviews, services, yearsOfExperience,
   sparePartsHighlights, sparePartsCategories, sparePartsBrands,
+  allSupportedAppliances,
 } from "@/data/site";
 import { serviceIcons } from "@/components/Illustrations";
 import {
@@ -135,9 +136,10 @@ export default function HomepageClient() {
             </h1>
 
             {/* Subtext */}
-            <p className="mt-4 sm:mt-7 max-w-[520px] text-base sm:text-lg leading-relaxed text-white/70">
-              Professioneller Reparaturservice in Osnabrück. Waschmaschinen,
-              Kühlschränke, Backöfen & mehr — persönlich, fair und schnell.
+            <p className="mt-4 sm:mt-7 max-w-[540px] text-base sm:text-lg leading-relaxed text-white/70">
+              Professioneller Reparaturservice für nahezu alle Haushaltsgeräte in Osnabrück:
+              Waschmaschinen, Trockner, Spülmaschinen, Kühl- &amp; Gefriergeräte, Herde,
+              Kochfelder, Kaffeevollautomaten &amp; Platinen — persönlich, fair und schnell.
             </p>
 
             {/* ── Mobile Workshop Photo (Visually prominent on phone, directly under intro) ── */}
@@ -316,10 +318,10 @@ export default function HomepageClient() {
           <FadeUp>
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
               <div>
-                <span className="eyebrow mb-3 block">Reparaturservice</span>
+                <span className="eyebrow mb-3 block">Meisterhafter Reparaturservice</span>
                 <SectionHeading
-                  title="Was wir reparieren"
-                  subtitle="Kompetente Hilfe für Ihre Haushaltsgeräte — schnell, fair und persönlich."
+                  title="Was wir reparieren: Nahezu alle Haushaltsgeräte"
+                  subtitle="Ob Großgerät, Küchentechnik, Kaffeevollautomat oder defekte Steuerplatine: Wir reparieren fast jedes Haushaltsgerät in Osnabrück."
                 />
               </div>
 
@@ -442,6 +444,103 @@ export default function HomepageClient() {
                 </p>
               </div>
               <InteractiveApplianceShowcase />
+            </FadeUp>
+          </div>
+
+          {/* ══════════════════════════════════════════════
+              FULL APPLIANCES CATALOGUE (NAHEZU ALLE GERÄTE)
+          ══════════════════════════════════════════════ */}
+          <div className="mt-20 pt-16 border-t border-primary/10">
+            <FadeUp>
+              <div className="mx-auto max-w-3xl text-center">
+                <span className="eyebrow mb-2 inline-block">Umfassender Reparaturservice</span>
+                <h3 className="text-2xl font-extrabold text-primary sm:text-3xl lg:text-4xl">
+                  Nahezu alle Elektrohaushaltsgeräte werden repariert
+                </h3>
+                <p className="mt-3 text-base text-ink-muted">
+                  Ob Großgerät in der Küche, Wäschepflege, moderner Kaffeevollautomat oder eine defekte Steuerplatine:
+                  Wir reparieren fast jedes Elektrogerät unabhängig von Marke und Alter.
+                </p>
+              </div>
+            </FadeUp>
+
+            {/* 6 Category Grid */}
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {allSupportedAppliances.map((cat) => (
+                <div
+                  key={cat.title}
+                  className="rounded-3xl border border-primary/8 bg-white p-6 shadow-xs hover:shadow-lg hover:border-accent/30 transition-all duration-300 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 pb-4 border-b border-primary/8">
+                      <h4 className="text-base font-bold text-primary">{cat.title}</h4>
+                      <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-[11px] font-bold text-accent shrink-0">
+                        {cat.badge}
+                      </span>
+                    </div>
+                    <p className="mt-3 text-xs leading-relaxed text-ink-muted">{cat.description}</p>
+                    <ul className="mt-4 space-y-3">
+                      {cat.items.map((item) => (
+                        <li key={item.name} className="rounded-xl bg-surface/70 p-3">
+                          <p className="text-xs font-bold text-primary flex items-center justify-between">
+                            <span>{item.name}</span>
+                            <CheckCircle2 size={13} className="text-accent" />
+                          </p>
+                          <p className="mt-1 text-[11px] text-ink-muted leading-tight">{item.description}</p>
+                          <div className="mt-2 flex flex-wrap gap-1">
+                            {item.symptoms.map((s) => (
+                              <span
+                                key={s}
+                                className="inline-block rounded-md bg-white border border-primary/6 px-1.5 py-0.5 text-[9.5px] font-medium text-ink-muted"
+                              >
+                                {s}
+                              </span>
+                            ))}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mt-5 pt-3 border-t border-primary/8 flex items-center justify-between">
+                    <span className="text-[11px] font-semibold text-ink-faint">Alle Fabrikate</span>
+                    <Link
+                      href="/kontakt#anfrage"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-accent hover:text-accent-dark transition-colors"
+                    >
+                      Anfragen <ArrowRight size={13} />
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* "Ihr Gerät ist nicht aufgeführt?" Banner */}
+            <FadeUp delay={0.2}>
+              <div className="mt-10 rounded-2xl border border-accent/25 bg-gradient-to-r from-accent/10 via-sky-500/5 to-accent/10 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 backdrop-blur-sm">
+                <div>
+                  <h4 className="text-lg font-bold text-primary flex items-center gap-2">
+                    <Sparkles className="text-accent" size={18} />
+                    Ihr Gerät ist nicht aufgeführt?
+                  </h4>
+                  <p className="mt-1.5 text-sm text-ink-muted max-w-xl">
+                    Wir prüfen und reparieren nahezu jedes Elektrohaushaltsgerät. Rufen Sie Herrn Hannachi direkt an oder senden Sie uns einfach ein Foto des Typenschilds per WhatsApp.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-3 shrink-0">
+                  <a href={business.phoneHref} className="btn-primary !py-2.5 !px-4 text-xs font-bold">
+                    <Phone size={14} /> {business.phoneDisplay}
+                  </a>
+                  <a
+                    href={business.whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-2.5 text-xs font-bold text-emerald-700 hover:bg-emerald-500/20 transition-all"
+                  >
+                    Foto per WhatsApp
+                  </a>
+                </div>
+              </div>
             </FadeUp>
           </div>
         </div>

@@ -209,3 +209,155 @@ export const sparePartsBrands = [
   { name: "Whirlpool", group: "Whirlpool Gruppe" },
 ];
 
+export type SupportedApplianceCategory = {
+  title: string;
+  badge: string;
+  description: string;
+  items: {
+    name: string;
+    description: string;
+    symptoms: string[];
+  }[];
+};
+
+export const allSupportedAppliances: SupportedApplianceCategory[] = [
+  {
+    title: "Wäschepflege & Trocknen",
+    badge: "Großgeräte",
+    description: "Zuverlässige Instandsetzung für eine saubere und schonende Wäschepflege.",
+    items: [
+      {
+        name: "Waschmaschinen & Toplader",
+        description: "Frontlader, Toplader und kompakte Waschmaschinen aller Fabrikate.",
+        symptoms: ["Pumpt nicht ab", "Schleudert nicht", "Wasser tritt aus", "Trommellager defekt", "Fehlermeldung"],
+      },
+      {
+        name: "Wäschetrockner",
+        description: "Wärmepumpentrockner, Kondenstrockner und Ablufttrockner aller Hersteller.",
+        symptoms: ["Heizt nicht mehr", "Trommel steht", "Trocknet nicht durch", "Wasserbehälter-Warnung"],
+      },
+      {
+        name: "Waschtrockner (2-in-1)",
+        description: "Kombinierte Wasch- und Trockengeräte mit komplexer Sensortechnik.",
+        symptoms: ["Programm bricht ab", "Trockenfunktion streikt", "Starke Vibrationen"],
+      },
+    ],
+  },
+  {
+    title: "Spülen & Geschirrpflege",
+    badge: "Küche",
+    description: "Schnelle Fehlerbehebung, damit das Geschirr wieder glänzend sauber wird.",
+    items: [
+      {
+        name: "Geschirrspüler",
+        description: "Vollintegrierte, teilintegrierte, Unterbau- und Stand-Spülmaschinen.",
+        symptoms: ["Wasser bleibt stehen", "Heizt nicht", "Geschirr nicht sauber", "Aquastop ausgelöst"],
+      },
+      {
+        name: "Gastro- & Bürospülmaschinen",
+        description: "Schnellspüler und Kleingewerbegeräte in Praxen, Büros und Kanzleien.",
+        symptoms: ["Dosierung fehlerhaft", "Druckverlust", "Laufzeitfehler"],
+      },
+    ],
+  },
+  {
+    title: "Kühlen & Gefrieren",
+    badge: "Frische",
+    description: "Notfallservice für Kühlgeräte — schnell vor Ort, damit Lebensmittel frisch bleiben.",
+    items: [
+      {
+        name: "Kühlschränke",
+        description: "Einbau- und Standkühlschränke mit und ohne Gefrierfach.",
+        symptoms: ["Kühlt nicht mehr", "Kompressor läuft durch", "Ungewöhnliche Geräusche", "Vereist stark"],
+      },
+      {
+        name: "Gefrierschränke & Gefriertruhen",
+        description: "NoFrost-Gefrierschränke, Tiefkühltruhen und Vorratsgeräte.",
+        symptoms: ["Temperaturalarm", "Starke Eisbildung", "Lüfter rattert", "Dichtung undicht"],
+      },
+      {
+        name: "Side-by-Side & French Door",
+        description: "Großraum-Kühlschränke mit Eiswürfelbereiter und digitaler Invertertechnik.",
+        symptoms: ["Eisbereiter streikt", "Kühlkreislauf ungleichmäßig", "Displayausfall"],
+      },
+    ],
+  },
+  {
+    title: "Kochen, Backen & Lüften",
+    badge: "Küche & Hitze",
+    description: "Sicherheit und Präzision bei allen wärme- und lüftungstechnischen Küchengeräten.",
+    items: [
+      {
+        name: "Backöfen & Einbauöfen",
+        description: "Umluft-, Heißluft- und Dampfbacköfen aller Systeme.",
+        symptoms: ["Unter-/Oberhitze defekt", "Ringheizkörper durchgebrannt", "Lüfter laut", "Thermostat schaltet ab"],
+      },
+      {
+        name: "Elektro- & Standherde",
+        description: "Klassische Standherde und moderne Einbauherd-Kombinationen.",
+        symptoms: ["Platte bleibt kalt", "Schalter defekt", "Backofenuhr blockiert"],
+      },
+      {
+        name: "Ceran- & Induktionskochfelder",
+        description: "Autarke Glaskeramik- und Induktionsfelder mit Touch-Steuerung.",
+        symptoms: ["Touch reagiert nicht", "Fehlercode im Display", "Kochzone heizt nicht", "Sicherung fliegt"],
+      },
+      {
+        name: "Dunstabzugshauben",
+        description: "Wandhauben, Inselhauben, Flachschirm- und Kopffreihauben.",
+        symptoms: ["Motor blockiert", "Beleuchtung defekt", "Stufenschaltung streikt", "Extrem laut"],
+      },
+      {
+        name: "Mikrowellen & Dampfgarer",
+        description: "Einbau- und Stand-Mikrowellen sowie Solo- und Kombidampfgarer.",
+        symptoms: ["Erwärmt Speisen nicht", "Drehteller steht", "Sicherung löst aus", "Display dunkel"],
+      },
+    ],
+  },
+  {
+    title: "Kaffeevollautomaten & Kleingeräte",
+    badge: "Genuss & Komfort",
+    description: "Fachmännische Wartung, Reinigung, Entkalkung und Reparatur für feinsten Kaffeegenuss.",
+    items: [
+      {
+        name: "Kaffeevollautomaten",
+        description: "Jura, DeLonghi, Siemens, Miele, Saeco, Melitta, Nivona, Krups uvm.",
+        symptoms: ["Brühgruppe klemmt", "Wasser unter der Maschine", "Kaffee fließt nicht", "Mahlwerk blockiert"],
+      },
+      {
+        name: "Siebträgermaschinen",
+        description: "Druckprüfungen, Pumpenwechsel, Dichtungen und Thermoblöcke.",
+        symptoms: ["Kein Druckaufbau", "Dampfventil undicht", "Heizt unzureichend"],
+      },
+      {
+        name: "Ausgewählte Kleingeräte",
+        description: "Bügelstationen, Staubsauger, Küchenmaschinen auf persönliche Anfrage.",
+        symptoms: ["Mechanische & elektrische Prüfung vorab"],
+      },
+    ],
+  },
+  {
+    title: "Meisterwerkstatt: Platinen- & Elektronikreparatur",
+    badge: "Hightech-Vorteil",
+    description: "Platinenreparatur auf Bauteilebene statt teurem Komplettaustausch — spart bares Geld!",
+    items: [
+      {
+        name: "Steuerungsplatinen & Leistungselektronik",
+        description: "Reparatur von Relais, Triacs, Kondensatoren, Netzteilen und Leiterbahnen.",
+        symptoms: ["Gerät ist komplett tot", "Relais klickt nur", "Fehlerstrom / Kurzschluss"],
+      },
+      {
+        name: "Inverter- & Motorsteuerungen",
+        description: "Moderne bürstenlose Inverter-Antriebe für Waschmaschinen und Wärmepumpen.",
+        symptoms: ["Motor ruckelt", "Drehzahlfehler", "Inverter-Fehlercode"],
+      },
+      {
+        name: "Display- & Bedienmodule",
+        description: "Tastaturen, Drehencoder, Segmentanzeigen und Touch-Panele.",
+        symptoms: ["Tasten ohne Funktion", "Display flackert oder bleibt schwarz"],
+      },
+    ],
+  },
+];
+
+
