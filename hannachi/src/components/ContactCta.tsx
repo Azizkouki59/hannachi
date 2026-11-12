@@ -24,7 +24,7 @@ export default function ContactCta() {
             <Sparkles size={12} />
             Kostenlose Ersteinschätzung
           </div>
-          <h2 className="text-4xl font-extrabold leading-[1.08] sm:text-5xl lg:text-[56px]">
+          <h2 className="text-3xl font-extrabold leading-[1.1] sm:text-5xl lg:text-[56px]">
             Gerät kaputt?<br />
             <span className="bg-gradient-to-r from-accent-light via-accent to-sky-400 bg-clip-text text-transparent">
               Wir helfen sofort.

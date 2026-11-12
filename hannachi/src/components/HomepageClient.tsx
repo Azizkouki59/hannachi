@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import {
   FadeUp, StaggerContainer, StaggerItem, CountUp,
   GlassBadge, MagneticHover, Parallax,
+  ScrollProgressBar, MobileQuickActions, Marquee,
 } from "@/components/animations";
 import { SectionHeading } from "@/components/ui";
 import { business, brands, reviews, services, yearsOfExperience } from "@/data/site";
@@ -76,6 +77,9 @@ export default function HomepageClient() {
 
   return (
     <>
+      {/* Scroll Progress Bar at very top */}
+      <ScrollProgressBar />
+
       {/* ══════════════════════════════════════════════
           HERO
       ══════════════════════════════════════════════ */}
@@ -104,12 +108,12 @@ export default function HomepageClient() {
           />
         </div>
 
-        <div className="container-page relative grid gap-16 pb-24 pt-28 sm:pt-32 lg:grid-cols-12 lg:gap-10 lg:pb-32 lg:pt-40">
+        <div className="container-page relative grid gap-12 pb-24 pt-24 sm:pt-32 lg:grid-cols-12 lg:items-center lg:gap-10 lg:pb-32 lg:pt-36">
 
           {/* ── Left: text ── */}
-          <div className="z-10 lg:col-span-7 lg:pt-2">
+          <div className="z-10 lg:col-span-7">
             {/* Badge */}
-            <div className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-accent/25 bg-accent/8 px-4 py-2 text-sm font-semibold text-accent-light backdrop-blur-sm">
+            <div className="mb-6 sm:mb-8 inline-flex items-center gap-2.5 rounded-full border border-accent/25 bg-accent/8 px-4 py-2 text-xs sm:text-sm font-semibold text-accent-light backdrop-blur-sm">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-70" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
@@ -118,35 +122,35 @@ export default function HomepageClient() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-[46px] font-extrabold leading-[1.03] text-white sm:text-[60px] xl:text-[72px]">
+            <h1 className="text-[34px] sm:text-[52px] lg:text-[60px] xl:text-[68px] font-extrabold leading-[1.06] text-white">
               Wenn Ihr Gerät{" "}
               <span className="relative inline-block">
                 <span className="text-gradient-shimmer">streikt</span>
               </span>
               {" "}—{" "}
-              <br className="hidden lg:block" />
+              <br className="hidden sm:block" />
               wir bringen es zurück.
             </h1>
 
             {/* Subtext */}
-            <p className="mt-7 max-w-[520px] text-lg leading-relaxed text-white/65 sm:text-xl">
+            <p className="mt-5 sm:mt-7 max-w-[520px] text-base sm:text-lg leading-relaxed text-white/70">
               Professioneller Reparaturservice in Osnabrück. Waschmaschinen,
               Kühlschränke, Backöfen & mehr — persönlich, fair und schnell.
             </p>
 
             {/* CTAs */}
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="mt-8 sm:mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link
                 href="/kontakt#anfrage"
-                className="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-accent px-7 py-4 text-base font-semibold text-white shadow-lg shadow-accent/25 transition-all duration-200 hover:bg-accent-dark hover:shadow-[0_8px_30px_rgba(14,165,233,.4)] hover:-translate-y-0.5"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-xl bg-accent px-7 py-4 text-base font-semibold text-white shadow-lg shadow-accent/25 transition-all duration-200 hover:bg-accent-dark hover:shadow-[0_8px_30px_rgba(14,165,233,.4)] hover:-translate-y-0.5 active:translate-y-0"
               >
                 <MessageCircle size={18} />
                 Reparatur anfragen
-                <ArrowRight size={16} className="ml-auto transition-transform duration-200 group-hover:translate-x-1" />
+                <ArrowRight size={16} className="ml-auto sm:ml-0 transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
               <a
                 href={business.phoneHref}
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/18 px-7 py-4 text-base font-semibold text-white/90 backdrop-blur-sm transition-all duration-200 hover:border-white/40 hover:bg-white/8"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-white/18 px-7 py-4 text-base font-semibold text-white/90 backdrop-blur-sm transition-all duration-200 hover:border-white/40 hover:bg-white/8 active:translate-y-0"
               >
                 <Phone size={18} />
                 {business.phoneDisplay}
@@ -154,7 +158,7 @@ export default function HomepageClient() {
             </div>
 
             {/* Trust badges */}
-            <div className="mt-10 flex flex-wrap gap-2.5">
+            <div className="mt-8 sm:mt-10 flex flex-wrap gap-2.5">
               {[
                 { icon: Shield, label: "Geprüft & zuverlässig" },
                 { icon: Star,   label: "5.0 ★ Google-Bewertung" },
@@ -162,7 +166,7 @@ export default function HomepageClient() {
               ].map(({ icon: Icon, label }) => (
                 <div
                   key={label}
-                  className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/75 backdrop-blur-sm"
+                  className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3.5 py-2 text-xs sm:text-sm font-medium text-white/75 backdrop-blur-sm"
                 >
                   <Icon size={14} className="text-accent" />
                   {label}
@@ -189,8 +193,8 @@ export default function HomepageClient() {
                 {/* Bottom gradient on photo */}
                 <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/70 via-transparent to-transparent pointer-events-none" />
                 {/* Photo caption */}
-                <div className="absolute bottom-4 left-4 right-4">
-                  <div className="rounded-xl border border-white/15 bg-primary-dark/80 px-4 py-2.5 backdrop-blur-md">
+                <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
+                  <div className="rounded-xl border border-white/15 bg-primary-dark/80 px-3.5 py-2 sm:px-4 sm:py-2.5 backdrop-blur-md">
                     <p className="text-xs font-semibold text-white/95">Werkstatt Hannachi · Osnabrück</p>
                     <p className="text-[11px] text-white/60">Reparatur vor Ort & in der Meisterwerkstatt</p>
                   </div>
@@ -199,26 +203,26 @@ export default function HomepageClient() {
 
               {/* Floating stat — experience */}
               <GlassBadge
-                className="absolute -bottom-4 -left-5 !bg-white !border-white/40 text-primary shadow-2xl"
+                className="absolute -bottom-3 -left-3 sm:-bottom-4 sm:-left-5 !bg-white !border-white/40 text-primary shadow-2xl"
                 delay={0.7}
               >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
-                    <CheckCircle2 size={20} className="text-accent" />
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-accent/10">
+                    <CheckCircle2 size={18} className="text-accent" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-ink-faint">Erfahrung</p>
-                    <p className="text-sm font-extrabold text-primary">{yearsOfExperience}+ Jahre</p>
+                    <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-ink-faint">Erfahrung</p>
+                    <p className="text-xs sm:text-sm font-extrabold text-primary">{yearsOfExperience}+ Jahre</p>
                   </div>
                 </div>
               </GlassBadge>
 
               {/* Floating stat — rating */}
               <GlassBadge
-                className="absolute -top-3 -right-3 !bg-white !border-white/40 text-primary shadow-2xl"
+                className="absolute -top-3 -right-2 sm:-top-3 sm:-right-3 !bg-white !border-white/40 text-primary shadow-2xl"
                 delay={0.9}
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2">
                   <div className="flex gap-0.5">
                     {[1,2,3,4,5].map(i => <Star key={i} size={11} className="fill-amber-400 text-amber-400" />)}
                   </div>
@@ -226,10 +230,15 @@ export default function HomepageClient() {
                 </div>
               </GlassBadge>
 
-              {/* Floating Cartoon Washer Mascot */}
+              {/* Floating Cartoon Washer Mascot (Desktop) */}
               <div className="absolute -bottom-8 -right-6 hidden sm:block z-30">
                 <FloatingHeroMascot />
               </div>
+            </div>
+
+            {/* Mobile Mascot Banner (Mobile Only) */}
+            <div className="mt-6 flex justify-center sm:hidden">
+              <FloatingHeroMascot />
             </div>
           </div>
         </div>
@@ -268,26 +277,15 @@ export default function HomepageClient() {
       </section>
 
       {/* ══════════════════════════════════════════════
-          BRANDS
+          BRANDS (Infinite Smooth Marquee)
       ══════════════════════════════════════════════ */}
-      <section className="border-y border-primary/6 bg-white py-8">
-        <div className="container-page">
-          <p className="mb-6 text-center text-[11px] font-bold uppercase tracking-[0.25em] text-ink-faint">
-            Alle gängigen Marken — egal welches Modell
+      <section className="border-y border-primary/6 bg-white py-6 overflow-hidden">
+        <div className="container-page mb-3 text-center">
+          <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-ink-faint">
+            Wir reparieren alle gängigen Marken — vor Ort &amp; in der Werkstatt
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            {[...brands, "Samsung", "LG", "Beko", "Liebherr", "Gorenje", "Miele"].map((b) => (
-              <motion.span
-                key={b}
-                whileHover={{ scale: 1.06, y: -2 }}
-                transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                className="cursor-default rounded-xl border border-primary/8 bg-surface px-5 py-2.5 text-[13px] font-semibold text-ink-muted transition-colors hover:border-accent/30 hover:bg-accent/5 hover:text-accent"
-              >
-                {b}
-              </motion.span>
-            ))}
-          </div>
         </div>
+        <Marquee items={[...brands, "Samsung", "LG", "Beko", "Liebherr", "Gorenje", "Constructa", "Neff", "Zanussi", "Privileg"]} />
       </section>
 
       {/* ══════════════════════════════════════════════
@@ -617,6 +615,13 @@ export default function HomepageClient() {
 
       <HowItWorks />
       <ContactCta />
+
+      {/* Floating Bottom Quick-Action Dock (Mobile Only) */}
+      <MobileQuickActions
+        phone={business.phoneDisplay}
+        phoneHref={business.phoneHref}
+        whatsappHref={business.whatsappHref}
+      />
     </>
   );
 }

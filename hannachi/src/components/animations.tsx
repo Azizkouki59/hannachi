@@ -196,3 +196,110 @@ export function MagneticHover({ children, className = "" }: { children: ReactNod
     </motion.div>
   );
 }
+
+/* ── Scroll progress bar (Top of page) ── */
+export function ScrollProgressBar() {
+  const { scrollYProgress } = useScroll();
+  return (
+    <motion.div
+      style={{ scaleX: scrollYProgress }}
+      className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-sky-400 to-indigo-500 origin-left z-50 pointer-events-none"
+    />
+  );
+}
+
+/* ── Mobile Floating Quick Actions (Sticky Phone Dock) ── */
+export function MobileQuickActions({
+  phone,
+  phoneHref,
+  whatsappHref,
+}: {
+  phone: string;
+  phoneHref: string;
+  whatsappHref: string;
+}) {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show dock after scrolling down 60px
+      if (window.scrollY > 60) {
+        setVisible(true);
+      } else {
+        setVisible(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ y: 80, opacity: 0 }}
+      animate={visible ? { y: 0, opacity: 1 } : { y: 80, opacity: 0 }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      className="fixed bottom-3 inset-x-3 z-40 sm:hidden"
+    >
+      <div className="flex items-center justify-between gap-2 rounded-2xl border border-white/20 bg-primary-dark/95 p-2 shadow-2xl backdrop-blur-xl ring-1 ring-black/20">
+        {/* Direct Call Button */}
+        <a
+          href={phoneHref}
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-white/10 py-3 text-xs font-bold text-white transition-all active:scale-95"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-sky-400" />
+          </span>
+          Anrufen
+        </a>
+
+        {/* WhatsApp Button */}
+        <a
+          href={whatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 py-3 text-xs font-bold text-white shadow-md transition-all active:scale-95"
+        >
+          {/* WhatsApp icon */}
+          <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current" aria-hidden>
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M11.998 2C6.477 2 2 6.477 2 12c0 1.774.46 3.44 1.267 4.898L2.013 22l5.265-1.21A9.954 9.954 0 0011.998 22c5.523 0 10-4.477 10-10S17.52 2 11.998 2zm0 18.182a8.154 8.154 0 01-4.17-1.141l-.298-.177-3.088.711.741-2.985-.194-.306A8.145 8.145 0 013.818 12c0-4.51 3.67-8.182 8.18-8.182S20.18 7.49 20.18 12s-3.672 8.182-8.182 8.182z"/>
+          </svg>
+          WhatsApp
+        </a>
+
+        {/* Repair Form Button */}
+        <a
+          href="/kontakt#anfrage"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-accent py-3 text-xs font-bold text-white shadow-md transition-all active:scale-95"
+        >
+          Anfragen
+        </a>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ── Smooth Brand Marquee ── */
+export function Marquee({ items }: { items: string[] }) {
+  return (
+    <div className="relative flex overflow-hidden select-none py-2 mask-linear">
+      <motion.div
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        className="flex shrink-0 items-center gap-4 pr-4"
+      >
+        {[...items, ...items].map((item, i) => (
+          <span
+            key={i}
+            className="inline-flex items-center gap-2 rounded-xl border border-primary/10 bg-white/90 px-5 py-2.5 text-xs font-extrabold tracking-wide text-primary shadow-xs backdrop-blur-sm transition-all hover:border-accent hover:text-accent hover:scale-105"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-accent/60" />
+            {item}
+          </span>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
