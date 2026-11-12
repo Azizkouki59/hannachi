@@ -115,3 +115,97 @@ export const nav = [
   { href: "/kundenbewertungen", label: "Kundenbewertungen" },
   { href: "/kontakt", label: "Kontakt" },
 ];
+
+export const sparePartsHighlights = [
+  {
+    title: "100% Original-Qualität",
+    desc: "Ausschließlich geprüfte Original-Ersatzteile direkt vom Hersteller oder zertifizierten Erstausrüstern.",
+  },
+  {
+    title: "Für alle Hersteller & Fabrikate",
+    desc: "Ersatzteile für Bosch, Siemens, Miele, AEG, Bauknecht, Liebherr, Neff, Samsung, Beko und viele mehr.",
+  },
+  {
+    title: "Schnelle Verfügbarkeit",
+    desc: "Gängige Verschleißteile direkt auf Lager in der Werkstatt. Spezifische Teile meist innerhalb 24–48h.",
+  },
+  {
+    title: "Beratung & Montageservice",
+    desc: "Genaue Teile-Identifikation per Typenschild. Wahlweise zur Selbstmontage oder fachgerechtem Einbau.",
+  },
+];
+
+export const sparePartsCategories = [
+  {
+    category: "Waschmaschinen & Trockner",
+    appliance: "waschmaschinen",
+    parts: [
+      "Laugenpumpen & Ablaufpumpen",
+      "Heizstäbe & Temperatursensoren",
+      "Türmanschetten & Bullaugendichtungen",
+      "Keilriemen & Antriebsriemen",
+      "Motorkohlen & Kohlebürsten",
+      "Stoßdämpfer & Aufhängungsfedern",
+      "Türverriegelungen & Elektronikmodule",
+    ],
+  },
+  {
+    category: "Geschirrspüler",
+    appliance: "geschirrspueler",
+    parts: [
+      "Umwälzpumpen & Heizpumpen",
+      "Ablaufpumpen & Rückschlagventile",
+      "Spritzarme oben & unten",
+      "Türdichtungen & Wannendichtungen",
+      "Aquastop-Zulaufschläuche",
+      "Dosierkammern & Klarspülerspender",
+      "Geschirrkörbe & Rollensätze",
+    ],
+  },
+  {
+    category: "Kühlschränke & Gefriergeräte",
+    appliance: "kuehlschraenke",
+    parts: [
+      "Thermostate & NTC-Temperaturfühler",
+      "Magnet-Türdichtungen",
+      "Türscharniere & Schleppscharniere",
+      "Umluftventilatoren & Lüftermotoren",
+      "Kompressor-Startrelais & Klixon",
+      "Abtauheizungen & Timer",
+      "Glasplatten, Schubladen & Türfächer",
+    ],
+  },
+  {
+    category: "Backöfen & Herde",
+    appliance: "backoefen",
+    parts: [
+      "Unterhitze- & Oberhitze-Heizkörper",
+      "Heißluft-Ringheizkörper",
+      "Backofenschalter & Energieregler",
+      "Sicherheits-Thermostate",
+      "Backofentürdichtungen & Scheiben",
+      "Heißluftlüfter & Kühlgebläse",
+      "Backbleche & Kombiroste",
+    ],
+  },
+];
+
+export const sparePartsBrands = [
+  { name: "Miele", group: "Deutsche Premiumklasse" },
+  { name: "Bosch", group: "BSH Hausgeräte" },
+  { name: "Siemens", group: "BSH Hausgeräte" },
+  { name: "AEG", group: "Electrolux Gruppe" },
+  { name: "Bauknecht", group: "Whirlpool Gruppe" },
+  { name: "Liebherr", group: "Kühl- & Gefriertechnik" },
+  { name: "Neff", group: "BSH Hausgeräte" },
+  { name: "Constructa", group: "BSH Hausgeräte" },
+  { name: "Samsung", group: "Originalteile" },
+  { name: "LG", group: "Originalteile" },
+  { name: "Beko", group: "Haushaltsgeräte" },
+  { name: "Gorenje", group: "Hisense Gruppe" },
+  { name: "Electrolux", group: "Electrolux Gruppe" },
+  { name: "Privileg", group: "Haushaltsgeräte" },
+  { name: "Zanussi", group: "Electrolux Gruppe" },
+  { name: "Whirlpool", group: "Whirlpool Gruppe" },
+];
+

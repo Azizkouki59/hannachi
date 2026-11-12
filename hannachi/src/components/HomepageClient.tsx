@@ -13,11 +13,13 @@ import {
   ScrollProgressBar, MobileQuickActions, Marquee,
 } from "@/components/animations";
 import { SectionHeading } from "@/components/ui";
-import { business, brands, reviews, services, yearsOfExperience } from "@/data/site";
+import {
+  business, brands, reviews, services, yearsOfExperience,
+  sparePartsHighlights, sparePartsCategories, sparePartsBrands,
+} from "@/data/site";
 import { serviceIcons } from "@/components/Illustrations";
 import {
   InteractiveApplianceShowcase,
-  FloatingHeroMascot,
   ApplianceGraphic,
 } from "@/components/AnimatedAppliances";
 import HowItWorks from "./HowItWorks";
@@ -108,12 +110,12 @@ export default function HomepageClient() {
           />
         </div>
 
-        <div className="container-page relative grid gap-12 pb-24 pt-24 sm:pt-32 lg:grid-cols-12 lg:items-center lg:gap-10 lg:pb-32 lg:pt-36">
+        <div className="container-page relative grid gap-8 pb-20 pt-16 sm:pt-24 lg:grid-cols-12 lg:items-center lg:gap-10 lg:pb-32 lg:pt-36">
 
           {/* ── Left: text ── */}
           <div className="z-10 lg:col-span-7">
             {/* Badge */}
-            <div className="mb-6 sm:mb-8 inline-flex items-center gap-2.5 rounded-full border border-accent/25 bg-accent/8 px-4 py-2 text-xs sm:text-sm font-semibold text-accent-light backdrop-blur-sm">
+            <div className="mb-4 sm:mb-8 inline-flex items-center gap-2.5 rounded-full border border-accent/25 bg-accent/8 px-4 py-2 text-xs sm:text-sm font-semibold text-accent-light backdrop-blur-sm">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-70" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
@@ -122,7 +124,7 @@ export default function HomepageClient() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-[34px] sm:text-[52px] lg:text-[60px] xl:text-[68px] font-extrabold leading-[1.06] text-white">
+            <h1 className="text-[32px] sm:text-[50px] lg:text-[60px] xl:text-[68px] font-extrabold leading-[1.06] text-white">
               Wenn Ihr Gerät{" "}
               <span className="relative inline-block">
                 <span className="text-gradient-shimmer">streikt</span>
@@ -133,13 +135,41 @@ export default function HomepageClient() {
             </h1>
 
             {/* Subtext */}
-            <p className="mt-5 sm:mt-7 max-w-[520px] text-base sm:text-lg leading-relaxed text-white/70">
+            <p className="mt-4 sm:mt-7 max-w-[520px] text-base sm:text-lg leading-relaxed text-white/70">
               Professioneller Reparaturservice in Osnabrück. Waschmaschinen,
               Kühlschränke, Backöfen & mehr — persönlich, fair und schnell.
             </p>
 
+            {/* ── Mobile Workshop Photo (Visually prominent on phone, directly under intro) ── */}
+            <div className="mt-6 mb-2 block lg:hidden">
+              <div className="relative overflow-hidden rounded-2xl ring-1 ring-white/15 shadow-[0_20px_50px_rgba(0,0,0,.6)]">
+                <Image
+                  src="/images/werkstatt.jpg"
+                  alt="Herr Hannachi in seiner Werkstatt in Osnabrück"
+                  width={900}
+                  height={600}
+                  priority
+                  quality={98}
+                  sizes="92vw"
+                  className="aspect-[16/10] w-full object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/85 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-2.5 left-2.5 right-2.5">
+                  <div className="rounded-xl border border-white/15 bg-primary-dark/85 px-3 py-2 backdrop-blur-md flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-bold text-white">Werkstatt Hannachi</p>
+                      <p className="text-[10px] text-white/70">Iburger Str. 5 · Osnabrück</p>
+                    </div>
+                    <span className="rounded-md bg-accent/20 border border-accent/40 px-2 py-0.5 text-[10px] font-bold text-accent-light">
+                      {yearsOfExperience}+ Jahre Erfahrung
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* CTAs */}
-            <div className="mt-8 sm:mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="mt-6 sm:mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link
                 href="/kontakt#anfrage"
                 className="group inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-xl bg-accent px-7 py-4 text-base font-semibold text-white shadow-lg shadow-accent/25 transition-all duration-200 hover:bg-accent-dark hover:shadow-[0_8px_30px_rgba(14,165,233,.4)] hover:-translate-y-0.5 active:translate-y-0"
@@ -158,7 +188,7 @@ export default function HomepageClient() {
             </div>
 
             {/* Trust badges */}
-            <div className="mt-8 sm:mt-10 flex flex-wrap gap-2.5">
+            <div className="mt-6 sm:mt-10 flex flex-wrap gap-2.5">
               {[
                 { icon: Shield, label: "Geprüft & zuverlässig" },
                 { icon: Star,   label: "5.0 ★ Google-Bewertung" },
@@ -175,11 +205,11 @@ export default function HomepageClient() {
             </div>
           </div>
 
-          {/* ── Right: hero image ── */}
-          <div className="relative z-10 mx-auto w-full max-w-md lg:col-span-5 lg:mx-0 lg:max-w-none">
+          {/* ── Right: hero image (Desktop only) ── */}
+          <div className="relative z-10 hidden lg:block lg:col-span-5">
             <div className="relative">
               {/* Main photo — wide workshop view with full sharpness */}
-              <div className="relative overflow-hidden rounded-3xl ring-1 ring-white/12 shadow-[0_32px_80px_rgba(0,0,0,.5)]">
+              <div className="relative overflow-hidden rounded-3xl ring-1 ring-white/15 shadow-[0_32px_80px_rgba(0,0,0,.6)]">
                 <Image
                   src="/images/werkstatt.jpg"
                   alt="Herr Hannachi in seiner Werkstatt – professionelle Gerätereparatur"
@@ -187,14 +217,14 @@ export default function HomepageClient() {
                   height={800}
                   priority
                   quality={98}
-                  sizes="(min-width: 1024px) 540px, (min-width: 640px) 480px, 92vw"
+                  sizes="(min-width: 1024px) 540px, 480px"
                   className="aspect-[16/11] w-full object-cover object-center"
                 />
                 {/* Bottom gradient on photo */}
-                <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/70 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/80 via-transparent to-transparent pointer-events-none" />
                 {/* Photo caption */}
-                <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
-                  <div className="rounded-xl border border-white/15 bg-primary-dark/80 px-3.5 py-2 sm:px-4 sm:py-2.5 backdrop-blur-md">
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="rounded-xl border border-white/15 bg-primary-dark/85 px-4 py-2.5 backdrop-blur-md">
                     <p className="text-xs font-semibold text-white/95">Werkstatt Hannachi · Osnabrück</p>
                     <p className="text-[11px] text-white/60">Reparatur vor Ort & in der Meisterwerkstatt</p>
                   </div>
@@ -203,42 +233,32 @@ export default function HomepageClient() {
 
               {/* Floating stat — experience */}
               <GlassBadge
-                className="absolute -bottom-3 -left-3 sm:-bottom-4 sm:-left-5 !bg-white !border-white/40 text-primary shadow-2xl"
+                className="absolute -bottom-4 -left-5 !bg-white !border-white/40 text-primary shadow-2xl"
                 delay={0.7}
               >
-                <div className="flex items-center gap-2.5 sm:gap-3">
-                  <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-accent/10">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
                     <CheckCircle2 size={18} className="text-accent" />
                   </div>
                   <div>
-                    <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-ink-faint">Erfahrung</p>
-                    <p className="text-xs sm:text-sm font-extrabold text-primary">{yearsOfExperience}+ Jahre</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-ink-faint">Erfahrung</p>
+                    <p className="text-sm font-extrabold text-primary">{yearsOfExperience}+ Jahre</p>
                   </div>
                 </div>
               </GlassBadge>
 
               {/* Floating stat — rating */}
               <GlassBadge
-                className="absolute -top-3 -right-2 sm:-top-3 sm:-right-3 !bg-white !border-white/40 text-primary shadow-2xl"
+                className="absolute -top-3 -right-3 !bg-white !border-white/40 text-primary shadow-2xl"
                 delay={0.9}
               >
-                <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="flex items-center gap-2">
                   <div className="flex gap-0.5">
                     {[1,2,3,4,5].map(i => <Star key={i} size={11} className="fill-amber-400 text-amber-400" />)}
                   </div>
-                  <span className="text-xs font-bold text-primary">5.0</span>
+                  <span className="text-xs font-bold text-primary">5.0 ★</span>
                 </div>
               </GlassBadge>
-
-              {/* Floating Cartoon Washer Mascot (Desktop) */}
-              <div className="absolute -bottom-8 -right-6 hidden sm:block z-30">
-                <FloatingHeroMascot />
-              </div>
-            </div>
-
-            {/* Mobile Mascot Banner (Mobile Only) */}
-            <div className="mt-6 flex justify-center sm:hidden">
-              <FloatingHeroMascot />
             </div>
           </div>
         </div>
@@ -352,16 +372,20 @@ export default function HomepageClient() {
                       {/* Photo or Cartoon Animation */}
                       <div className="relative aspect-[4/3] overflow-hidden">
                         {applianceView === "cartoon" ? (
-                          <div className="flex h-full w-full items-center justify-center bg-gradient-to-b from-sky-50/70 via-white to-slate-50 p-2 border-b border-primary/5">
-                            <ApplianceGraphic slug={s.slug} size="sm" />
-                            <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between pointer-events-none">
-                              <span className="inline-flex items-center gap-1 rounded-md bg-white/95 px-2 py-0.5 text-[11px] font-bold text-primary shadow-xs backdrop-blur-sm">
+                          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-900 via-primary-dark to-slate-950 p-3 overflow-hidden border-b border-primary/10 relative">
+                            {/* Subtle radial glow */}
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(14,165,233,0.18)_0%,transparent_70%)] pointer-events-none" />
+                            <div className="relative z-10 scale-95 transition-transform duration-300 group-hover:scale-105">
+                              <ApplianceGraphic slug={s.slug} size="sm" />
+                            </div>
+                            <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between pointer-events-none z-20">
+                              <span className="inline-flex items-center gap-1 rounded-md bg-black/60 px-2 py-0.5 text-[11px] font-bold text-white shadow-xs backdrop-blur-md border border-white/10">
                                 <Icon className="h-3 w-3 text-accent" />
                                 {s.title}
                               </span>
-                              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-accent bg-accent/10 px-2 py-0.5 rounded-full">
+                              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-accent-light bg-accent/20 border border-accent/30 px-2 py-0.5 rounded-full backdrop-blur-sm">
                                 <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                                Live
+                                Aktiv
                               </span>
                             </div>
                           </div>
@@ -544,6 +568,128 @@ export default function HomepageClient() {
               </Link>
             </div>
           </FadeUp>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          SPARE PARTS & SUPPLIERS (ERSATZTEILSERVICE ALLER MARKEN)
+      ══════════════════════════════════════════════ */}
+      <section className="section relative overflow-hidden bg-white border-t border-primary/8" id="ersatzteile">
+        <div className="container-page">
+          <FadeUp>
+            <div className="mx-auto max-w-3xl text-center">
+              <span className="eyebrow mb-3 inline-block">Originalteile &amp; Lieferanten</span>
+              <h2 className="text-3xl font-extrabold text-primary sm:text-4xl lg:text-[44px]">
+                Original-Ersatzteile für alle Marken
+              </h2>
+              <p className="mt-4 text-base sm:text-lg text-ink-muted">
+                Sie suchen ein bestimmtes Ersatzteil oder möchten Ihr Gerät mit langlebigen Originalteilen reparieren lassen?
+                Wir beliefern und warten Geräte aller führenden Hersteller — direkt ab Lager oder in kürzester Zeit beschafft.
+              </p>
+            </div>
+          </FadeUp>
+
+          {/* 4 Value Pillars */}
+          <StaggerContainer className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {sparePartsHighlights.map((item) => (
+              <StaggerItem key={item.title}>
+                <div className="card flex h-full flex-col p-6 border-primary/8 bg-surface/50 hover:bg-white hover:shadow-md transition-all">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent/10 text-accent mb-4">
+                    <CheckCircle2 size={20} />
+                  </div>
+                  <h3 className="text-base font-bold text-primary">{item.title}</h3>
+                  <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-ink-muted">{item.desc}</p>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+
+          {/* Component Showcase & Categories */}
+          <div className="mt-12 rounded-3xl border border-primary/10 bg-slate-900 text-white p-6 sm:p-10 relative overflow-hidden">
+            {/* Background glow */}
+            <div className="pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full bg-accent/15 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-blue-600/15 blur-3xl" />
+
+            <div className="relative z-10">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-8 border-b border-white/10">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-widest text-accent-light">Sortiment im Überblick</span>
+                  <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1">
+                    Gängige Ersatzteile &amp; Baugruppen
+                  </h3>
+                </div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs text-white/80">
+                  <Sparkles size={14} className="text-accent" />
+                  Direkt ab Lager oder in 24–48h lieferbar
+                </div>
+              </div>
+
+              <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {sparePartsCategories.map((cat) => (
+                  <div key={cat.category} className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
+                    <h4 className="text-sm font-bold text-accent-light pb-3 border-b border-white/10 flex items-center justify-between">
+                      {cat.category}
+                      <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                    </h4>
+                    <ul className="mt-3.5 space-y-2">
+                      {cat.parts.map((p) => (
+                        <li key={p} className="flex items-start gap-2 text-xs text-white/80">
+                          <CheckCircle2 size={13} className="text-accent shrink-0 mt-0.5" />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              {/* Supported Brands Tags */}
+              <div className="mt-10 pt-8 border-t border-white/10">
+                <p className="text-xs font-bold uppercase tracking-widest text-white/60 mb-4 text-center sm:text-left">
+                  Original-Ersatzteile für alle führenden Hersteller &amp; Marken:
+                </p>
+                <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+                  {sparePartsBrands.map((b) => (
+                    <span
+                      key={b.name}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/90 hover:bg-white/20 hover:border-accent/50 transition-all"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                      {b.name}
+                      <span className="text-[10px] text-white/40 hidden sm:inline">({b.group})</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Inquiry Action Box */}
+              <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-accent/30 bg-accent/10 p-5 backdrop-blur-sm">
+                <div>
+                  <p className="text-sm font-bold text-white">Sie benötigen ein Ersatzteil für Ihr Gerät?</p>
+                  <p className="text-xs text-white/70 mt-0.5">
+                    Halten Sie am besten die Typenschild-Nummer (E-Nr. / Modell) bereit — wir prüfen die Verfügbarkeit sofort!
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+                  <a
+                    href={business.phoneHref}
+                    className="inline-flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-xs font-bold text-white shadow-md hover:bg-accent-dark transition-all"
+                  >
+                    <Phone size={14} />
+                    {business.phoneDisplay}
+                  </a>
+                  <a
+                    href={business.whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-500/20 px-4 py-2.5 text-xs font-bold text-emerald-300 hover:bg-emerald-500/30 transition-all"
+                  >
+                    Per WhatsApp anfragen
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

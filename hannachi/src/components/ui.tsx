@@ -55,16 +55,20 @@ export function ServiceCard({ service }: { service: Service }) {
       href={`/leistungen/${service.slug}`}
       className="card group flex flex-col overflow-hidden bg-white"
     >
-      <div className="relative flex aspect-[4/3] items-center justify-center bg-gradient-to-b from-sky-50/70 via-white to-slate-50 p-2 border-b border-primary/5">
-        <ApplianceGraphic slug={service.slug} size="sm" />
-        <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between pointer-events-none">
-          <span className="inline-flex items-center gap-1 rounded-md bg-white/95 px-2 py-0.5 text-[11px] font-bold text-primary shadow-xs backdrop-blur-sm">
-            <Icon className="h-3 w-3 text-accent" />
+      <div className="relative flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-slate-900 via-primary-dark to-slate-950 p-3 overflow-hidden border-b border-primary/10">
+        {/* Subtle radial glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(14,165,233,0.18)_0%,transparent_70%)] pointer-events-none" />
+        <div className="relative z-10 scale-95 transition-transform duration-300 group-hover:scale-105">
+          <ApplianceGraphic slug={service.slug} size="sm" />
+        </div>
+        <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none z-20">
+          <span className="inline-flex items-center gap-1.5 rounded-lg bg-black/60 px-2.5 py-1 text-[11px] font-bold text-white shadow-xs backdrop-blur-md border border-white/10">
+            <Icon className="h-3.5 w-3.5 text-accent" />
             {service.title}
           </span>
-          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-accent bg-accent/10 px-2 py-0.5 rounded-full">
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-accent-light bg-accent/20 border border-accent/30 px-2 py-0.5 rounded-full backdrop-blur-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-            Live
+            Aktiv
           </span>
         </div>
       </div>
