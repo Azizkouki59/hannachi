@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Zap, RotateCw, Wind, Flame, Snowflake, Play, CheckCircle } from "lucide-react";
+import { Sparkles, Zap, RotateCw, Wind, Flame, Snowflake, Play, CheckCircle, Wrench, ArrowRight, HelpCircle } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════════════
    1. CARTOON ANIMATED WASHING MACHINE (Waschmaschine)
@@ -664,13 +665,15 @@ export function AnimatedOven({
    5. INTERACTIVE APPLIANCE HUB (Geräte-Labor / Simulator)
    ═══════════════════════════════════════════════════════════ */
 export function InteractiveApplianceShowcase() {
-  const [activeTab, setActiveTab] = useState<"washer" | "dishwasher" | "fridge" | "oven">("washer");
+  const [activeTab, setActiveTab] = useState<"washer" | "dishwasher" | "fridge" | "oven" | "other">("washer");
+  const [customDeviceText, setCustomDeviceText] = useState("");
 
   const tabs = [
     { id: "washer", label: "Waschmaschine", desc: "Trommel dreht nicht, pumpt nicht ab oder macht laute Geräusche?", icon: RotateCw },
     { id: "dishwasher", label: "Geschirrspüler", desc: "Geschirr wird nicht sauber, Wasser läuft aus oder Fehlercode blinkt?", icon: Sparkles },
     { id: "fridge", label: "Kühlschrank", desc: "Kühlt nicht mehr richtig, vereist ständig oder Kompressor brummt?", icon: Snowflake },
     { id: "oven", label: "Backofen", desc: "Wird nicht heiß, Ober-/Unterhitze defekt oder Scheibe beschädigt?", icon: Flame },
+    { id: "other", label: "Anderes Gerät", desc: "Wäschetrockner, Induktion, Dunsthaube, Kaffeeautomat, Platine oder sonstiges Gerät?", icon: Wrench },
   ] as const;
 
   return (
@@ -687,13 +690,13 @@ export function InteractiveApplianceShowcase() {
             <button
               key={t.id}
               onClick={() => setActiveTab(t.id)}
-              className={`flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all duration-200 ${
+              className={`flex items-center gap-2 rounded-xl px-4 sm:px-5 py-3 text-xs sm:text-sm font-bold transition-all duration-200 ${
                 isSelected
                   ? "bg-accent text-white shadow-md shadow-accent/25 scale-[1.02]"
                   : "bg-surface text-ink-muted hover:bg-white hover:text-primary hover:shadow-sm"
               }`}
             >
-              <Icon size={16} className={isSelected ? "animate-spin" : ""} />
+              <Icon size={16} className={isSelected && t.id !== "other" ? "animate-spin" : ""} />
               {t.label}
             </button>
           );
@@ -702,7 +705,7 @@ export function InteractiveApplianceShowcase() {
 
       {/* Main Display: Interactive Stage */}
       <div className="mt-8 grid items-center gap-8 lg:grid-cols-12">
-        {/* Left: Big Animated Appliance */}
+        {/* Left: Big Animated Appliance or Workshop Workbench */}
         <div className="flex items-center justify-center lg:col-span-6">
           <AnimatePresence mode="wait">
             <motion.div
@@ -711,12 +714,37 @@ export function InteractiveApplianceShowcase() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: -15 }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="flex justify-center"
+              className="flex justify-center w-full"
             >
               {activeTab === "washer" && <AnimatedWasher size="lg" />}
               {activeTab === "dishwasher" && <AnimatedDishwasher size="lg" />}
               {activeTab === "fridge" && <AnimatedFridge size="lg" />}
               {activeTab === "oven" && <AnimatedOven size="lg" />}
+              {activeTab === "other" && (
+                <div className="relative flex flex-col items-center justify-center p-8 rounded-3xl bg-slate-900 border border-white/10 text-white shadow-2xl overflow-hidden w-full max-w-sm">
+                  <div className="pointer-events-none absolute -top-10 -right-10 h-36 w-36 rounded-full bg-accent/25 blur-2xl" />
+                  <div className="pointer-events-none absolute -bottom-10 -left-10 h-36 w-36 rounded-full bg-blue-600/25 blur-2xl" />
+                  <div className="relative z-10 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-tr from-accent to-sky-400 text-white shadow-xl shadow-accent/35 mb-4">
+                    <Wrench size={36} />
+                  </div>
+                  <h4 className="relative z-10 text-lg font-extrabold text-white text-center">
+                    Nahezu alle Fabrikate &amp; Gerätetypen
+                  </h4>
+                  <p className="relative z-10 text-xs text-white/70 text-center mt-1.5 leading-relaxed">
+                    Wäschetrockner · Induktion · Dunsthauben · Kaffeeautomaten · Elektronikplatinen
+                  </p>
+                  <div className="relative z-10 mt-5 flex flex-wrap gap-1.5 justify-center">
+                    {["Wäschetrockner", "Induktionsfeld", "Kaffeeautomat", "Dunstabzug", "Mikrowelle", "Platinen"].map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-lg bg-white/10 border border-white/15 px-2.5 py-1 text-[11px] font-semibold text-accent-light"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -728,7 +756,7 @@ export function InteractiveApplianceShowcase() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
             </span>
-            Live-Interaktives Gerät
+            {activeTab === "other" ? "Freie Geräte-Eingabe" : "Live-Interaktives Gerät"}
           </div>
 
           <h3 className="mt-4 text-2xl font-extrabold text-primary sm:text-3xl">
@@ -736,81 +764,135 @@ export function InteractiveApplianceShowcase() {
             {activeTab === "dishwasher" && "Geschirrspüler-Reparatur"}
             {activeTab === "fridge" && "Kühlschrank & Gefriergeräte"}
             {activeTab === "oven" && "Backofen & Herde"}
+            {activeTab === "other" && "Anderes Haushaltsgerät reparieren"}
           </h3>
 
           <p className="mt-3 text-base leading-relaxed text-ink-muted">
             {tabs.find((t) => t.id === activeTab)?.desc}
           </p>
 
-          {/* Common issues checklist */}
-          <div className="mt-6 rounded-2xl border border-primary/8 bg-white/80 p-5 backdrop-blur-sm">
-            <p className="text-xs font-bold uppercase tracking-wider text-ink-faint">
-              Häufige Fehler, die wir vor Ort beheben:
-            </p>
-            <ul className="mt-3 space-y-2 text-sm font-semibold text-primary">
-              {activeTab === "washer" && (
-                <>
+          {/* If "other", show the interactive typing box */}
+          {activeTab === "other" ? (
+            <div className="mt-6 space-y-4">
+              <div className="rounded-2xl border border-accent/30 bg-accent/5 p-5">
+                <label htmlFor="interactive-custom-device" className="block text-xs font-bold uppercase tracking-wider text-accent mb-2">
+                  Welches Gerät möchten Sie reparieren lassen?
+                </label>
+                <div className="flex flex-col sm:flex-row gap-2.5">
+                  <input
+                    id="interactive-custom-device"
+                    type="text"
+                    value={customDeviceText}
+                    onChange={(e) => setCustomDeviceText(e.target.value)}
+                    placeholder="z. B. Wäschetrockner, Jura Kaffeeautomat, Induktionsfeld..."
+                    className="flex-1 rounded-xl border border-primary/15 bg-white px-4 py-2.5 text-sm text-primary placeholder:text-ink-faint focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25"
+                  />
+                  <Link
+                    href={`/kontakt?geraet=${encodeURIComponent(customDeviceText.trim() || "Anderes Gerät")}#anfrage`}
+                    className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-accent px-5 py-2.5 text-xs font-bold text-white shadow-md hover:bg-accent-dark transition-all shrink-0"
+                  >
+                    Gerät anfragen <ArrowRight size={14} />
+                  </Link>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-primary/8 bg-white/80 p-4 backdrop-blur-sm">
+                <p className="text-xs font-bold uppercase tracking-wider text-ink-faint mb-2">
+                  Was wir ebenfalls häufig vor Ort oder in der Werkstatt reparieren:
+                </p>
+                <ul className="space-y-1.5 text-xs font-semibold text-primary">
                   <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-accent" /> Schleudert nicht oder wackelt stark
+                    <CheckCircle size={14} className="text-accent" /> Wärmepumpen- &amp; Kondenstrockner (heizt nicht, stoppt)
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-accent" /> Wasser läuft nicht ab / pumpt nicht ab
+                    <CheckCircle size={14} className="text-accent" /> Induktions- &amp; Cerankochfelder (Kochzone bleibt kalt, Fehlercode)
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-accent" /> Tür verriegelt nicht oder öffnet nicht
-                  </li>
-                </>
-              )}
-              {activeTab === "dishwasher" && (
-                <>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-accent" /> Spült nicht sauber / Sprüharme blockiert
+                    <CheckCircle size={14} className="text-accent" /> Kaffeevollautomaten (Brühgruppe klemmt, verliert Wasser, Mahlwerk)
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-accent" /> Heizt nicht / Geschirr bleibt nass
+                    <CheckCircle size={14} className="text-accent" /> Steuerungsplatinen auf Bauteilebene statt teurem Komplettaustausch
                   </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-accent" /> Wasserstopp / Aquastop ausgelöst
-                  </li>
-                </>
-              )}
-              {activeTab === "fridge" && (
-                <>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-accent" /> Innenraum warm, Kompressor läuft dauernd
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-accent" /> Starke Vereisung an der Rückwand
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-accent" /> Ungewöhnliche Brumm- oder Klickgeräusche
-                  </li>
-                </>
-              )}
-              {activeTab === "oven" && (
-                <>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-accent" /> Unterhitze oder Oberhitze bleibt kalt
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-accent" /> Umluftlüfter dreht sich nicht oder quietscht
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-accent" /> Sicherung springt beim Einschalten raus
-                  </li>
-                </>
-              )}
-            </ul>
-          </div>
+                </ul>
+              </div>
+            </div>
+          ) : (
+            /* Common issues checklist for the standard 4 */
+            <div className="mt-6 rounded-2xl border border-primary/8 bg-white/80 p-5 backdrop-blur-sm">
+              <p className="text-xs font-bold uppercase tracking-wider text-ink-faint">
+                Häufige Fehler, die wir vor Ort beheben:
+              </p>
+              <ul className="mt-3 space-y-2 text-sm font-semibold text-primary">
+                {activeTab === "washer" && (
+                  <>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={16} className="text-accent" /> Schleudert nicht oder wackelt stark
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={16} className="text-accent" /> Wasser läuft nicht ab / pumpt nicht ab
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={16} className="text-accent" /> Tür verriegelt nicht oder öffnet nicht
+                    </li>
+                  </>
+                )}
+                {activeTab === "dishwasher" && (
+                  <>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={16} className="text-accent" /> Spült nicht sauber / Sprüharme blockiert
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={16} className="text-accent" /> Heizt nicht / Geschirr bleibt nass
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={16} className="text-accent" /> Wasserstopp / Aquastop ausgelöst
+                    </li>
+                  </>
+                )}
+                {activeTab === "fridge" && (
+                  <>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={16} className="text-accent" /> Innenraum warm, Kompressor läuft dauernd
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={16} className="text-accent" /> Starke Vereisung an der Rückwand
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={16} className="text-accent" /> Ungewöhnliche Brumm- oder Klickgeräusche
+                    </li>
+                  </>
+                )}
+                {activeTab === "oven" && (
+                  <>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={16} className="text-accent" /> Unterhitze oder Oberhitze bleibt kalt
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={16} className="text-accent" /> Umluftlüfter dreht sich nicht oder quietscht
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={16} className="text-accent" /> Sicherung springt beim Einschalten raus
+                    </li>
+                  </>
+                )}
+              </ul>
+            </div>
+          )}
 
           {/* Quick CTA */}
           <div className="mt-7 flex flex-wrap items-center gap-3">
-            <a
-              href="/kontakt#anfrage"
+            <Link
+              href={
+                activeTab === "other"
+                  ? `/kontakt?geraet=${encodeURIComponent(customDeviceText.trim() || "Anderes Gerät")}#anfrage`
+                  : "/kontakt#anfrage"
+              }
               className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-accent/25 transition-all hover:bg-accent-dark hover:-translate-y-0.5"
             >
-              Dieses Gerät reparieren lassen
-            </a>
+              {activeTab === "other" && customDeviceText.trim()
+                ? `„${customDeviceText.trim()}“ anfragen`
+                : "Dieses Gerät reparieren lassen"}
+            </Link>
             <a
               href="tel:+491703493494"
               className="inline-flex items-center gap-2 rounded-xl border border-primary/15 bg-white px-5 py-3.5 text-sm font-bold text-primary transition-all hover:border-accent hover:text-accent"

@@ -1,39 +1,96 @@
-export const deviceTypes = ["Waschmaschine", "Geschirrspüler", "Kühlschrank", "Backofen"] as const;
+export const deviceTypes = [
+  "Waschmaschine",
+  "Wäschetrockner",
+  "Geschirrspüler",
+  "Kühlschrank / Gefriergerät",
+  "Backofen / Herd",
+  "Ceranfeld / Induktion",
+  "Dunstabzugshaube",
+  "Mikrowelle",
+  "Kaffeevollautomat",
+  "Elektronik / Platine",
+  "Anderes Gerät (Sonstiges)",
+] as const;
 
 export type RepairValues = {
-  device: string; brand: string; model: string; problem: string;
-  zip: string; name: string; phone: string; email: string; photo: File | null;
+  device: string;
+  customDevice?: string;
+  brand: string;
+  model: string;
+  problem: string;
+  zip: string;
+  name: string;
+  phone: string;
+  email: string;
+  photo: File | null;
 };
+
 export type RepairErrors = Partial<Record<keyof RepairValues, string>>;
 
-export const emptyValues: RepairValues = { device: "", brand: "", model: "", problem: "", zip: "", name: "", phone: "", email: "", photo: null };
+export const emptyValues: RepairValues = {
+  device: "",
+  customDevice: "",
+  brand: "",
+  model: "",
+  problem: "",
+  zip: "",
+  name: "",
+  phone: "",
+  email: "",
+  photo: null,
+};
 
 export const MAX_PHOTO_MB = 8;
 
 export function validate(v: RepairValues): RepairErrors {
   const e: RepairErrors = {};
-  if (!v.device) e.device = "Bitte wählen Sie ein Gerät aus.";
-  if (!v.brand.trim()) e.brand = "Bitte nennen Sie die Marke, zum Beispiel Miele oder Bosch.";
-  if (v.problem.trim().length < 10) e.problem = "Bitte beschreiben Sie das Problem in mindestens 10 Zeichen.";
-  if (!/^\d{5}$/.test(v.zip.trim())) e.zip = "Bitte geben Sie eine fünfstellige Postleitzahl ein.";
-  if (v.name.trim().length < 2) e.name = "Bitte geben Sie Ihren Namen ein.";
-  if (!/^[+()\d\s/-]{6,20}$/.test(v.phone.trim()) || v.phone.replace(/\D/g, "").length < 6) e.phone = "Bitte geben Sie eine gültige Telefonnummer ein.";
+  if (!v.device) {
+    e.device = "Bitte wählen Sie ein Gerät aus.";
+  }
+  if (v.device && (v.device.includes("Anderes") || v.device === "Sonstiges")) {
+    if (!v.customDevice || v.customDevice.trim().length < 2) {
+      e.customDevice = "Bitte nennen Sie uns Ihr Gerät (z. B. Dampfgarer, Siebträger, Bügelstation).";
+    }
+  }
+  if (!v.brand.trim()) {
+    e.brand = "Bitte nennen Sie die Marke, zum Beispiel Miele oder Bosch.";
+  }
+  if (v.problem.trim().length < 10) {
+    e.problem = "Bitte beschreiben Sie das Problem in mindestens 10 Zeichen.";
+  }
+  if (!/^\d{5}$/.test(v.zip.trim())) {
+    e.zip = "Bitte geben Sie eine fünfstellige Postleitzahl ein.";
+  }
+  if (v.name.trim().length < 2) {
+    e.name = "Bitte geben Sie Ihren Namen ein.";
+  }
+  if (!/^[+()\d\s/-]{6,20}$/.test(v.phone.trim()) || v.phone.replace(/\D/g, "").length < 6) {
+    e.phone = "Bitte geben Sie eine gültige Telefonnummer ein.";
+  }
   if (v.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email.trim())) {
     e.email = "Bitte geben Sie eine gültige E-Mail-Adresse ein.";
   }
   if (v.photo) {
-    if (!/^image\/(jpeg|png|webp)$/.test(v.photo.type)) e.photo = "Bitte laden Sie ein Foto als JPG, PNG oder WebP hoch.";
-    else if (v.photo.size > MAX_PHOTO_MB * 1024 * 1024) e.photo = `Das Foto ist größer als ${MAX_PHOTO_MB} MB.`;
+    if (!/^image\/(jpeg|png|webp)$/.test(v.photo.type)) {
+      e.photo = "Bitte laden Sie ein Foto als JPG, PNG oder WebP hoch.";
+    } else if (v.photo.size > MAX_PHOTO_MB * 1024 * 1024) {
+      e.photo = `Das Foto ist größer als ${MAX_PHOTO_MB} MB.`;
+    }
   }
   return e;
 }
 
 export function createWhatsAppMessage(v: RepairValues): string {
+  const isOther = v.device.includes("Anderes") || v.device === "Sonstiges";
+  const deviceText = isOther && v.customDevice?.trim()
+    ? `${v.customDevice.trim()} (Sonstiges Gerät)`
+    : v.device;
+
   const lines: string[] = [
     `Hallo Herr Hannachi,`,
     `ich möchte eine Reparaturanfrage stellen:`,
     ``,
-    `*Gerät:* ${v.device}`,
+    `*Gerät:* ${deviceText}`,
     `*Marke:* ${v.brand.trim()}`,
   ];
 
@@ -77,7 +134,9 @@ export async function submitRepairRequest(v: RepairValues): Promise<SubmitResult
   if (url) {
     try {
       const body = new FormData();
-      Object.entries(v).forEach(([k, val]) => { if (val) body.append(k, val as string | Blob); });
+      Object.entries(v).forEach(([k, val]) => {
+        if (val) body.append(k, val as string | Blob);
+      });
       await fetch(url, { method: "POST", body });
     } catch {
       // Backend error shouldn't block WhatsApp handoff

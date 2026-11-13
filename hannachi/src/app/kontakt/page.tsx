@@ -10,11 +10,25 @@ export const metadata: Metadata = {
 };
 
 const deviceBySlug: Record<string, string> = {
-  waschmaschinen: "Waschmaschine", geschirrspueler: "Geschirrspüler", kuehlschraenke: "Kühlschrank", backoefen: "Backofen",
+  waschmaschinen: "Waschmaschine",
+  geschirrspueler: "Geschirrspüler",
+  kuehlschraenke: "Kühlschrank / Gefriergerät",
+  backoefen: "Backofen / Herd",
+  trockner: "Wäschetrockner",
+  induktion: "Ceranfeld / Induktion",
+  kaffee: "Kaffeevollautomat",
+  platine: "Elektronik / Platine",
+  anderes: "Anderes Gerät (Sonstiges)",
 };
 
 export default function Kontakt({ searchParams }: { searchParams: { geraet?: string } }) {
-  const slug = services.find((s) => s.slug === searchParams.geraet)?.slug;
+  const param = searchParams.geraet?.trim().toLowerCase();
+  let defaultDevice = "";
+  if (param && deviceBySlug[param]) {
+    defaultDevice = deviceBySlug[param];
+  } else if (searchParams.geraet) {
+    defaultDevice = searchParams.geraet.trim();
+  }
   return (
     <>
       <PageHeader title="Wir helfen Ihnen gerne weiter." intro="Rufen Sie an, schreiben Sie per WhatsApp oder senden Sie uns Ihre Anfrage über das Formular." />
@@ -101,7 +115,7 @@ export default function Kontakt({ searchParams }: { searchParams: { geraet?: str
             </div>
           </aside>
           <div id="anfrage" className="scroll-mt-28 lg:col-span-8">
-            <RepairForm defaultDevice={slug ? deviceBySlug[slug] : ""} />
+            <RepairForm defaultDevice={defaultDevice} />
           </div>
         </div>
       </section>

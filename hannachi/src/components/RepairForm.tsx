@@ -15,7 +15,19 @@ type Status = "idle" | "loading" | "success" | "error";
 
 export default function RepairForm({ defaultDevice = "" }: { defaultDevice?: string }) {
   const uid = useId();
-  const [values, setValues] = useState<RepairValues>({ ...emptyValues, device: defaultDevice });
+  const isPredefined = deviceTypes.some((d) => d.toLowerCase() === defaultDevice.toLowerCase());
+  const initialDevice = isPredefined
+    ? (deviceTypes.find((d) => d.toLowerCase() === defaultDevice.toLowerCase()) || defaultDevice)
+    : (defaultDevice ? "Anderes Gerät (Sonstiges)" : "");
+  const initialCustom = (!isPredefined && defaultDevice && !defaultDevice.includes("Anderes"))
+    ? defaultDevice
+    : "";
+
+  const [values, setValues] = useState<RepairValues>({
+    ...emptyValues,
+    device: initialDevice,
+    customDevice: initialCustom,
+  });
   const [errors, setErrors] = useState<RepairErrors>({});
   const [status, setStatus] = useState<Status>("idle");
   const [whatsappUrl, setWhatsappUrl] = useState("");
@@ -170,23 +182,86 @@ export default function RepairForm({ defaultDevice = "" }: { defaultDevice?: str
       </p>
 
       <div className="mt-8 grid gap-x-6 gap-y-6 sm:grid-cols-2">
-        <Field label="Gerätetyp *" htmlFor={id("device")} error={errors.device}>
-          <select
-            id={id("device")}
-            data-field="device"
-            value={values.device}
-            onChange={(e) => set("device", e.target.value)}
-            onBlur={() => blur("device")}
-            className={input(errors.device)}
-            aria-invalid={!!errors.device}
-            aria-describedby={errors.device ? id("device-err") : undefined}
+        {/* Device selection with quick-select pills and dropdown */}
+        <div className="sm:col-span-2">
+          <label className="mb-2 block text-sm font-semibold text-primary">
+            Gerätetyp auswählen *
+          </label>
+          {/* Quick interactive device pills */}
+          <div className="mb-3 flex flex-wrap gap-2">
+            {deviceTypes.map((d) => {
+              const isSelected = values.device === d;
+              const isOther = d.includes("Anderes");
+              return (
+                <button
+                  key={d}
+                  type="button"
+                  onClick={() => {
+                    set("device", d);
+                    if (!isOther) set("customDevice", "");
+                  }}
+                  className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
+                    isSelected
+                      ? "bg-accent text-white shadow-md shadow-accent/25 scale-[1.02]"
+                      : "bg-surface text-ink-muted border border-primary/10 hover:border-accent/40 hover:text-primary hover:bg-white"
+                  }`}
+                >
+                  {isOther ? "✨ Anderes Gerät (Freitext)" : d}
+                </button>
+              );
+            })}
+          </div>
+
+          <Field label="Oder aus der Liste wählen:" htmlFor={id("device")} error={errors.device}>
+            <select
+              id={id("device")}
+              data-field="device"
+              value={values.device}
+              onChange={(e) => {
+                const val = e.target.value;
+                set("device", val);
+                if (!val.includes("Anderes")) set("customDevice", "");
+              }}
+              onBlur={() => blur("device")}
+              className={input(errors.device)}
+              aria-invalid={!!errors.device}
+              aria-describedby={errors.device ? id("device-err") : undefined}
+            >
+              <option value="">Bitte wählen</option>
+              {deviceTypes.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
+          </Field>
+        </div>
+
+        {/* Dynamic Custom Device Input when "Anderes Gerät" is selected */}
+        {values.device && values.device.includes("Anderes") && (
+          <Field
+            label="Welches Gerät möchten Sie reparieren lassen? *"
+            htmlFor={id("customDevice")}
+            error={errors.customDevice}
+            className="sm:col-span-2 rounded-2xl border border-accent/30 bg-accent/5 p-4 sm:p-5"
+            hint="Nennen Sie Ihr Gerät, z. B. Dampfgarer, Kaffeemaschine, Siebträger, Bügelstation, Staubsauger, etc."
           >
-            <option value="">Bitte wählen</option>
-            {deviceTypes.map((d) => (
-              <option key={d}>{d}</option>
-            ))}
-          </select>
-        </Field>
+            <input
+              id={id("customDevice")}
+              data-field="customDevice"
+              value={values.customDevice || ""}
+              onChange={(e) => set("customDevice", e.target.value)}
+              onBlur={() => blur("customDevice")}
+              className={input(errors.customDevice)}
+              autoComplete="off"
+              placeholder="z. B. Dampfgarer, Siebträger, Kaffeemaschine..."
+              aria-invalid={!!errors.customDevice}
+              aria-describedby={errors.customDevice ? id("customDevice-err") : undefined}
+              autoFocus
+            />
+          </Field>
+        )}
+
         <Field label="Marke *" htmlFor={id("brand")} error={errors.brand}>
           <input
             id={id("brand")}
