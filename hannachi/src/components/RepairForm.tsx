@@ -1,5 +1,5 @@
 "use client";
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { AlertCircle, Check, Copy, ImagePlus, Loader2, MessageCircle, Phone, X } from "lucide-react";
 import { business } from "@/data/site";
 import {
@@ -7,26 +7,46 @@ import {
   emptyValues,
   submitRepairRequest,
   validate,
+  buildWhatsAppUrl,
+  createWhatsAppMessage,
   type RepairErrors,
   type RepairValues,
 } from "@/lib/repairRequest";
 
 type Status = "idle" | "loading" | "success" | "error";
 
+// Intelligent matching between service card titles and predefined deviceTypes pills
+function resolveInitialDevice(input: string): { device: string; custom: string } {
+  if (!input) return { device: "", custom: "" };
+  const clean = input.trim().toLowerCase();
+
+  // Direct match
+  const exact = deviceTypes.find((d) => d.toLowerCase() === clean);
+  if (exact) return { device: exact, custom: "" };
+
+  // Common plurals, synonyms and card titles
+  if (clean.includes("wasch") && !clean.includes("trockner") && !clean.includes("geschirr")) return { device: "Waschmaschine", custom: "" };
+  if (clean.includes("trockner")) return { device: "Wäschetrockner", custom: "" };
+  if (clean.includes("spül") || clean.includes("geschirr")) return { device: "Geschirrspüler", custom: "" };
+  if (clean.includes("kühl") || clean.includes("gefrier")) return { device: "Kühlschrank / Gefriergerät", custom: "" };
+  if (clean.includes("ofen") || clean.includes("herd") || clean.includes("back")) return { device: "Backofen / Herd", custom: "" };
+  if (clean.includes("ceran") || clean.includes("induktion") || clean.includes("kochfeld")) return { device: "Ceranfeld / Induktion", custom: "" };
+  if (clean.includes("dunst") || clean.includes("haube") || clean.includes("abzug")) return { device: "Dunstabzugshaube", custom: "" };
+  if (clean.includes("mikro")) return { device: "Mikrowelle", custom: "" };
+  if (clean.includes("kaffee") || clean.includes("espresso") || clean.includes("siebträger")) return { device: "Kaffeevollautomat", custom: "" };
+  if (clean.includes("platin") || clean.includes("elektronik") || clean.includes("steuer") || clean.includes("inverter")) return { device: "Elektronik / Platine", custom: "" };
+
+  return { device: "Anderes Gerät (Sonstiges)", custom: input.trim() };
+}
+
 export default function RepairForm({ defaultDevice = "" }: { defaultDevice?: string }) {
   const uid = useId();
-  const isPredefined = deviceTypes.some((d) => d.toLowerCase() === defaultDevice.toLowerCase());
-  const initialDevice = isPredefined
-    ? (deviceTypes.find((d) => d.toLowerCase() === defaultDevice.toLowerCase()) || defaultDevice)
-    : (defaultDevice ? "Anderes Gerät (Sonstiges)" : "");
-  const initialCustom = (!isPredefined && defaultDevice && !defaultDevice.includes("Anderes"))
-    ? defaultDevice
-    : "";
+  const initial = resolveInitialDevice(defaultDevice);
 
   const [values, setValues] = useState<RepairValues>({
     ...emptyValues,
-    device: initialDevice,
-    customDevice: initialCustom,
+    device: initial.device,
+    customDevice: initial.custom,
   });
   const [errors, setErrors] = useState<RepairErrors>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -36,6 +56,13 @@ export default function RepairForm({ defaultDevice = "" }: { defaultDevice?: str
   const [preview, setPreview] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+
+  // Revoke preview object URL on cleanup to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
 
   const id = (k: string) => `${uid}-${k}`;
   const set = <K extends keyof RepairValues>(k: K, val: RepairValues[K]) => {
@@ -55,6 +82,7 @@ export default function RepairForm({ defaultDevice = "" }: { defaultDevice?: str
 
   async function onSubmit(ev: React.FormEvent) {
     ev.preventDefault();
+    if (status === "loading") return;
     const found = validate(values);
     setErrors(found);
     const firstKey = Object.keys(found)[0];
@@ -63,15 +91,20 @@ export default function RepairForm({ defaultDevice = "" }: { defaultDevice?: str
       return;
     }
     setStatus("loading");
+
+    const whatsappUrl = buildWhatsAppUrl(values);
+    const messageText = createWhatsAppMessage(values);
+
+    // Open WhatsApp synchronously to prevent popup blockers
+    if (typeof window !== "undefined") {
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    }
+
     try {
-      const res = await submitRepairRequest(values);
-      setWhatsappUrl(res.whatsappUrl);
-      setMessageText(res.messageText);
+      await submitRepairRequest(values);
+      setWhatsappUrl(whatsappUrl);
+      setMessageText(messageText);
       setStatus("success");
-      // Open WhatsApp automatically
-      if (typeof window !== "undefined") {
-        window.open(res.whatsappUrl, "_blank", "noopener,noreferrer");
-      }
     } catch {
       setStatus("error");
     }
@@ -200,11 +233,10 @@ export default function RepairForm({ defaultDevice = "" }: { defaultDevice?: str
                     set("device", d);
                     if (!isOther) set("customDevice", "");
                   }}
-                  className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
-                    isSelected
+                  className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${isSelected
                       ? "bg-accent text-white shadow-md shadow-accent/25 scale-[1.02]"
                       : "bg-surface text-ink-muted border border-primary/10 hover:border-accent/40 hover:text-primary hover:bg-white"
-                  }`}
+                    }`}
                 >
                   {isOther ? "✨ Anderes Gerät (Freitext)" : d}
                 </button>
@@ -344,9 +376,8 @@ export default function RepairForm({ defaultDevice = "" }: { defaultDevice?: str
           ) : (
             <label
               htmlFor={id("photo")}
-              className={`flex cursor-pointer items-center gap-3 rounded-xl border border-dashed px-4 py-5 text-[15px] transition-colors hover:border-accent hover:bg-accent/4 ${
-                errors.photo ? "border-red-500" : "border-primary/20"
-              }`}
+              className={`flex cursor-pointer items-center gap-3 rounded-xl border border-dashed px-4 py-5 text-[15px] transition-colors hover:border-accent hover:bg-accent/4 ${errors.photo ? "border-red-500" : "border-primary/20"
+                }`}
             >
               <ImagePlus size={22} className="text-ink-muted" aria-hidden />
               <span className="text-ink-muted">
@@ -430,7 +461,7 @@ export default function RepairForm({ defaultDevice = "" }: { defaultDevice?: str
         <button
           type="submit"
           disabled={status === "loading"}
-          className="btn !bg-emerald-600 hover:!bg-emerald-700 text-white min-w-[250px] shadow-sm hover:shadow-[0_4px_16px_rgba(16,185,129,.35)] disabled:opacity-70"
+          className="btn !bg-emerald-600 hover:!bg-emerald-700 text-white w-full sm:w-auto sm:min-w-[250px] shadow-sm hover:shadow-[0_4px_16px_rgba(16,185,129,.35)] disabled:opacity-70"
         >
           {status === "loading" ? (
             <>
@@ -451,8 +482,7 @@ export default function RepairForm({ defaultDevice = "" }: { defaultDevice?: str
 }
 
 const input = (err?: string) =>
-  `w-full rounded-xl border bg-white px-4 py-3 text-[16px] text-primary placeholder:text-ink-faint transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25 ${
-    err ? "border-red-500" : "border-primary/15 hover:border-primary/30"
+  `w-full rounded-xl border bg-white px-4 py-3 text-[16px] text-primary placeholder:text-ink-faint transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25 ${err ? "border-red-500" : "border-primary/15 hover:border-primary/30"
   }`;
 
 function Field({

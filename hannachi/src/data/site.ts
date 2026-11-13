@@ -222,9 +222,9 @@ export type SupportedApplianceCategory = {
 
 export const allSupportedAppliances: SupportedApplianceCategory[] = [
   {
-    title: "Wäschepflege & Trocknen",
+    title: "Wäsche waschen und trocknen",
     badge: "Großgeräte",
-    description: "Zuverlässige Instandsetzung für eine saubere und schonende Wäschepflege.",
+    description: "Zuverlässige Reparatur für Ihre Waschmaschinen und Trockner.",
     items: [
       {
         name: "Waschmaschinen & Toplader",
@@ -244,9 +244,9 @@ export const allSupportedAppliances: SupportedApplianceCategory[] = [
     ],
   },
   {
-    title: "Spülen & Geschirrpflege",
+    title: "Geschirr spülen",
     badge: "Küche",
-    description: "Schnelle Fehlerbehebung, damit das Geschirr wieder glänzend sauber wird.",
+    description: "Schnelle Reparatur für sauberes Geschirr und funktionierende Spülmaschinen.",
     items: [
       {
         name: "Geschirrspüler",
@@ -261,8 +261,8 @@ export const allSupportedAppliances: SupportedApplianceCategory[] = [
     ],
   },
   {
-    title: "Kühlen & Gefrieren",
-    badge: "Frische",
+    title: "Kühlen und Gefrieren",
+    badge: "Kühltechnik",
     description: "Notfallservice für Kühlgeräte — schnell vor Ort, damit Lebensmittel frisch bleiben.",
     items: [
       {
@@ -283,7 +283,7 @@ export const allSupportedAppliances: SupportedApplianceCategory[] = [
     ],
   },
   {
-    title: "Kochen, Backen & Lüften",
+    title: "Kochen, Backen und Lüften",
     badge: "Küche & Hitze",
     description: "Sicherheit und Präzision bei allen wärme- und lüftungstechnischen Küchengeräten.",
     items: [
@@ -315,9 +315,9 @@ export const allSupportedAppliances: SupportedApplianceCategory[] = [
     ],
   },
   {
-    title: "Kaffeevollautomaten & Kleingeräte",
-    badge: "Genuss & Komfort",
-    description: "Fachmännische Wartung, Reinigung, Entkalkung und Reparatur für feinsten Kaffeegenuss.",
+    title: "Kaffee und Kleingeräte",
+    badge: "Kaffee & Geräte",
+    description: "Wartung und Reparatur für Kaffeemaschinen und ausgewählte Geräte.",
     items: [
       {
         name: "Kaffeevollautomaten",
@@ -338,8 +338,8 @@ export const allSupportedAppliances: SupportedApplianceCategory[] = [
   },
   {
     title: "Meisterwerkstatt: Platinen- & Elektronikreparatur",
-    badge: "Hightech-Vorteil",
-    description: "Platinenreparatur auf Bauteilebene statt teurem Komplettaustausch — spart bares Geld!",
+    badge: "Elektronik",
+    description: "Reparatur auf Bauteilebene statt teurem Austausch der gesamten Platine.",
     items: [
       {
         name: "Steuerungsplatinen & Leistungselektronik",

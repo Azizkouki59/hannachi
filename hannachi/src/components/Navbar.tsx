@@ -158,7 +158,7 @@ export default function Navbar() {
       {open && (
         <div
           id="mobile-nav"
-          className="fixed inset-x-0 top-[112px] bottom-0 z-50 overflow-y-auto bg-primary-dark/98 backdrop-blur-2xl lg:hidden animate-fade-in"
+          className="fixed inset-x-0 top-full bottom-0 z-50 overflow-y-auto bg-primary-dark/98 backdrop-blur-2xl lg:hidden animate-fade-in"
         >
           {/* Atmospheric background glow */}
           <div className="pointer-events-none absolute -top-20 -right-20 h-72 w-72 rounded-full bg-accent/15 blur-3xl" />

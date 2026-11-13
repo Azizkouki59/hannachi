@@ -85,7 +85,7 @@ export function AnimatedWasher({
           viewBox="0 0 240 280"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="drop-shadow-2xl"
+          className="drop-shadow-2xl max-w-full h-auto"
         >
           <defs>
             {/* Gradients */}
@@ -314,7 +314,7 @@ export function AnimatedDishwasher({
           viewBox="0 0 240 280"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="drop-shadow-2xl"
+          className="drop-shadow-2xl max-w-full h-auto"
         >
           {/* Main Body */}
           <rect x="15" y="15" width="210" height="250" rx="24" fill="#F8FAFC" stroke="#CBD5E1" strokeWidth="3" />
@@ -451,7 +451,7 @@ export function AnimatedFridge({
           viewBox="0 0 240 280"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="drop-shadow-2xl"
+          className="drop-shadow-2xl max-w-full h-auto"
         >
           {/* Main Fridge Cabinet */}
           <rect x="30" y="10" width="180" height="258" rx="22" fill="#F1F5F9" stroke="#CBD5E1" strokeWidth="3" />
@@ -564,7 +564,7 @@ export function AnimatedOven({
           viewBox="0 0 240 280"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="drop-shadow-2xl"
+          className="drop-shadow-2xl max-w-full h-auto"
         >
           {/* Main Body */}
           <rect x="15" y="15" width="210" height="250" rx="24" fill="#1E293B" stroke="#475569" strokeWidth="3" />

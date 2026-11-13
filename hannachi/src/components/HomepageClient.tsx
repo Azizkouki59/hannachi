@@ -127,13 +127,13 @@ export default function HomepageClient() {
 
             {/* Headline */}
             <h1 className="text-[32px] sm:text-[50px] lg:text-[60px] xl:text-[68px] font-extrabold leading-[1.06] text-white">
-              Wenn Ihr Gerät{" "}
+              Wenn Ihr Haushaltsgerät{" "}
               <span className="relative inline-block">
                 <span className="text-gradient-shimmer">streikt</span>
               </span>
               {" "}—{" "}
               <br className="hidden sm:block" />
-              wir bringen es zurück.
+              wir reparieren es zuverlässig.
             </h1>
 
             {/* Subtext */}
@@ -467,7 +467,7 @@ export default function HomepageClient() {
                   Nahezu alle Elektrohaushaltsgeräte werden repariert
                 </h3>
                 <p className="mt-3 text-base text-ink-muted">
-                  Ob Großgerät in der Küche, Wäschepflege, moderner Kaffeevollautomat oder eine defekte Steuerplatine:
+                  Ob Großgerät in der Küche, Waschgeräte, moderner Kaffeevollautomat oder eine defekte Steuerplatine:
                   Wir reparieren fast jedes Elektrogerät unabhängig von Marke und Alter.
                 </p>
               </div>

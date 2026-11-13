@@ -64,7 +64,7 @@ export function validate(v: RepairValues): RepairErrors {
   if (v.name.trim().length < 2) {
     e.name = "Bitte geben Sie Ihren Namen ein.";
   }
-  if (!/^[+()\d\s/-]{6,20}$/.test(v.phone.trim()) || v.phone.replace(/\D/g, "").length < 6) {
+  if (!/^[+()\d\s/-]{6,30}$/.test(v.phone.trim()) || v.phone.replace(/\D/g, "").length < 6) {
     e.phone = "Bitte geben Sie eine gültige Telefonnummer ein.";
   }
   if (v.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email.trim())) {

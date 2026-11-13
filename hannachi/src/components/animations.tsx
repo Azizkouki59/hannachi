@@ -454,7 +454,8 @@ export function FloatingSupportLauncher({
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         onClick={() => setOpen(!open)}
         className="group relative flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-[0_12px_32px_rgba(14,165,233,.45)] ring-2 ring-white/20 transition-all duration-300 hover:scale-105 hover:bg-accent-dark active:scale-95"
-        aria-label="Schnellkontakt öffnen"
+        aria-label={open ? "Schnellkontakt schließen" : "Schnellkontakt öffnen"}
+        aria-expanded={open}
         title="Schnellkontakt"
       >
         {/* Subtle pulsing halo ring */}

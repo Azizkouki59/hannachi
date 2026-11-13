@@ -225,7 +225,7 @@ export default function ServicesDirectory() {
       </div>
 
       {/* ── Main Content Area ── */}
-      <div className="container-page py-10 sm:py-14 space-y-16 sm:space-y-20">
+      <div className="container-page py-10 sm:py-14 pb-28 sm:pb-14 space-y-16 sm:space-y-20">
         {filteredCategories.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-2xl border border-primary/10 p-8">
             <p className="text-base font-bold text-primary">Keine Geräte für Ihre Suche gefunden.</p>
@@ -316,3 +316,4 @@ export default function ServicesDirectory() {
     </div>
   );
 }
+
