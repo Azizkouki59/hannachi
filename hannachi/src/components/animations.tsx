@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useEffect, useState, ReactNode } from "react";
-import { motion, useInView, useScroll, useTransform, type Variants } from "framer-motion";
+import { motion, AnimatePresence, useInView, useScroll, useTransform, type Variants } from "framer-motion";
+import { Phone, MessageCircle, Wrench, X, ArrowRight, Sparkles } from "lucide-react";
 
 /* ── Shared easing ── */
 const smooth = [0.16, 1, 0.3, 1] as const;
@@ -300,6 +301,171 @@ export function Marquee({ items }: { items: string[] }) {
         ))}
       </motion.div>
     </div>
+  );
+}
+
+/* ── Interactive Spotlight Card (Inspired by skillloop.tn pointer-field & pf-halo) ── */
+export function SpotlightCard({
+  children,
+  className = "",
+  spotlightColor = "rgba(14, 165, 233, 0.12)",
+}: {
+  children: ReactNode;
+  className?: string;
+  spotlightColor?: string;
+}) {
+  const divRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!divRef.current) return;
+    const rect = divRef.current.getBoundingClientRect();
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <div
+      ref={divRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setOpacity(1)}
+      onMouseLeave={() => setOpacity(0)}
+      className={`relative overflow-hidden ${className}`}
+    >
+      <div
+        className="pointer-events-none absolute -inset-px transition-opacity duration-500 z-10"
+        style={{
+          opacity,
+          background: `radial-gradient(420px circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 80%)`,
+        }}
+      />
+      {children}
+    </div>
+  );
+}
+
+/* ── Floating Support & Fast Contact Launcher (Inspired by skillloop.tn support-launcher) ── */
+export function FloatingSupportLauncher({
+  phone,
+  phoneHref,
+  whatsappHref,
+}: {
+  phone: string;
+  phoneHref: string;
+  whatsappHref: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setVisible(window.scrollY > 120);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <aside aria-label="Schnellkontakt" className="fixed bottom-6 right-6 z-40 hidden sm:block">
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 15 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-3 w-80 rounded-3xl border border-white/15 bg-primary-dark/95 p-5 text-white shadow-2xl backdrop-blur-2xl ring-1 ring-white/10"
+          >
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-accent" />
+                </span>
+                <span className="text-xs font-bold uppercase tracking-wider text-white">
+                  Schnellkontakt Hannachi
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="rounded-lg p-1 text-white/50 hover:bg-white/10 hover:text-white transition-colors"
+                aria-label="Schließen"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <p className="mt-3 text-xs text-white/70 leading-relaxed">
+              Sie haben eine Frage oder benötigen dringend Hilfe für Ihr Haushaltsgerät?
+            </p>
+
+            <div className="mt-4 space-y-2">
+              <a
+                href={phoneHref}
+                className="flex items-center justify-between rounded-xl border border-white/15 bg-white/5 p-3 text-xs font-bold text-white transition-all hover:bg-accent hover:border-accent hover:shadow-md"
+              >
+                <span className="flex items-center gap-2.5">
+                  <Phone size={15} className="text-accent group-hover:text-white" />
+                  {phone}
+                </span>
+                <span className="text-[11px] text-white/60">Anrufen</span>
+              </a>
+
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between rounded-xl border border-emerald-500/30 bg-emerald-500/15 p-3 text-xs font-bold text-emerald-300 transition-all hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:shadow-md"
+              >
+                <span className="flex items-center gap-2.5">
+                  <MessageCircle size={15} />
+                  WhatsApp Chat
+                </span>
+                <span className="text-[11px] opacity-75">Sofort</span>
+              </a>
+
+              <a
+                href="/kontakt#anfrage"
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between rounded-xl border border-white/15 bg-white/10 p-3 text-xs font-bold text-white transition-all hover:bg-white/20"
+              >
+                <span className="flex items-center gap-2.5">
+                  <Sparkles size={15} className="text-accent" />
+                  Reparaturanfrage online
+                </span>
+                <ArrowRight size={13} className="text-white/50" />
+              </a>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-white/50">
+              <span>Iburger Straße 5 · Osnabrück</span>
+              <span className="text-accent font-semibold">Seit 1990</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Launcher Button */}
+      <motion.button
+        type="button"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={visible ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        onClick={() => setOpen(!open)}
+        className="group relative flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-[0_12px_32px_rgba(14,165,233,.45)] ring-2 ring-white/20 transition-all duration-300 hover:scale-105 hover:bg-accent-dark active:scale-95"
+        aria-label="Schnellkontakt öffnen"
+        title="Schnellkontakt"
+      >
+        {/* Subtle pulsing halo ring */}
+        <span className="pointer-events-none absolute -inset-1.5 rounded-full border border-accent/40 animate-live-ping" />
+        {open ? (
+          <X size={22} className="transition-transform group-hover:rotate-90 duration-200" />
+        ) : (
+          <Wrench size={22} className="transition-transform group-hover:rotate-12 duration-200" />
+        )}
+      </motion.button>
+    </aside>
   );
 }
 

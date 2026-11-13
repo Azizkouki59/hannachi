@@ -11,6 +11,7 @@ import {
   FadeUp, StaggerContainer, StaggerItem, CountUp,
   GlassBadge, MagneticHover, Parallax,
   ScrollProgressBar, MobileQuickActions, Marquee,
+  SpotlightCard, FloatingSupportLauncher,
 } from "@/components/animations";
 import { SectionHeading } from "@/components/ui";
 import {
@@ -100,10 +101,10 @@ export default function HomepageClient() {
           />
           {/* Progressive dark overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-primary-dark via-primary-dark/92 to-primary-dark/55" />
-          {/* Atmospheric glow blobs */}
-          <div className="absolute -top-48 -right-48 h-[600px] w-[600px] rounded-full bg-accent/12 blur-[140px]" />
-          <div className="absolute bottom-10 left-10 h-[450px] w-[450px] rounded-full bg-blue-700/8 blur-[120px]" />
-          <div className="absolute top-1/3 left-1/3 h-[350px] w-[350px] rounded-full bg-violet-600/6 blur-[100px]" />
+          {/* Atmospheric glow blobs with organic drift (Inspired by skillloop.tn) */}
+          <div className="absolute -top-48 -right-48 h-[600px] w-[600px] rounded-full bg-accent/12 blur-[140px] orb-drift pointer-events-none" />
+          <div className="absolute bottom-10 left-10 h-[450px] w-[450px] rounded-full bg-blue-700/8 blur-[120px] orb-drift-reverse pointer-events-none" />
+          <div className="absolute top-1/3 left-1/3 h-[350px] w-[350px] rounded-full bg-violet-600/6 blur-[100px] orb-drift pointer-events-none" />
           {/* Fine dot grid */}
           <div
             className="absolute inset-0 opacity-[0.025]"
@@ -115,10 +116,10 @@ export default function HomepageClient() {
 
           {/* ── Left: text ── */}
           <div className="z-10 lg:col-span-7">
-            {/* Badge */}
-            <div className="mb-4 sm:mb-8 inline-flex items-center gap-2.5 rounded-full border border-accent/25 bg-accent/8 px-4 py-2 text-xs sm:text-sm font-semibold text-accent-light backdrop-blur-sm">
+            {/* Badge with sweeping sheen (Inspired by skillloop.tn hero-badge) */}
+            <div className="mb-4 sm:mb-8 inline-flex items-center gap-2.5 rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-xs sm:text-sm font-semibold text-accent-light backdrop-blur-sm hero-badge">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-70" />
+                <span className="absolute inline-flex h-full w-full animate-live-ping rounded-full bg-accent opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
               </span>
               Zuverlässig seit {business.founded} · Osnabrück
@@ -401,11 +402,19 @@ export default function HomepageClient() {
                               sizes="(min-width:1024px) 25vw, 50vw"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/80 via-primary-dark/20 to-transparent" />
-                            <div className="absolute bottom-3 left-3 right-3">
+                            <div className="absolute bottom-3 left-3 right-3 group-hover:opacity-0 transition-opacity duration-200">
                               <span className="inline-flex items-center gap-1.5 rounded-lg bg-white/90 px-3 py-1.5 text-xs font-bold text-primary backdrop-blur-sm shadow-sm">
                                 <Icon className="h-3.5 w-3.5" />
                                 {s.title}
                               </span>
+                            </div>
+                            {/* SkillLoop-inspired Card Peek Sheet */}
+                            <div className="card-peek">
+                              <p className="text-xs font-bold text-white flex items-center gap-1.5">
+                                <Icon className="h-3.5 w-3.5 text-accent" />
+                                {s.title}
+                              </p>
+                              <p className="text-[11px] text-white/75 line-clamp-2 mt-0.5">{s.short}</p>
                             </div>
                           </>
                         ) : (
@@ -582,16 +591,16 @@ export default function HomepageClient() {
           <StaggerContainer className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {advantages.map(({ icon: Icon, title, text, gradient }) => (
               <StaggerItem key={title}>
-                <motion.div
-                  whileHover={{ y: -8, transition: { duration: 0.3, ease: "easeOut" } }}
-                  className="group h-full rounded-2xl border border-white/8 bg-white/[0.03] p-6 backdrop-blur-sm transition-colors duration-300 hover:border-accent/25 hover:bg-white/[0.055]"
+                <SpotlightCard
+                  spotlightColor="rgba(14, 165, 233, 0.16)"
+                  className="group h-full rounded-2xl border border-white/10 bg-white/[0.035] p-6 backdrop-blur-sm transition-all duration-300 hover:border-accent/40 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)]"
                 >
                   <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${gradient}`}>
                     <Icon size={22} className="text-accent" />
                   </div>
                   <h3 className="mt-5 text-[17px] font-bold text-white">{title}</h3>
-                  <p className="mt-2.5 text-[13px] leading-relaxed text-white/50">{text}</p>
-                </motion.div>
+                  <p className="mt-2.5 text-[13px] leading-relaxed text-white/60">{text}</p>
+                </SpotlightCard>
               </StaggerItem>
             ))}
           </StaggerContainer>
@@ -863,6 +872,13 @@ export default function HomepageClient() {
 
       {/* Floating Bottom Quick-Action Dock (Mobile Only) */}
       <MobileQuickActions
+        phone={business.phoneDisplay}
+        phoneHref={business.phoneHref}
+        whatsappHref={business.whatsappHref}
+      />
+
+      {/* Floating Speed-Dial Support Launcher (Desktop, Inspired by SkillLoop) */}
+      <FloatingSupportLauncher
         phone={business.phoneDisplay}
         phoneHref={business.phoneHref}
         whatsappHref={business.whatsappHref}

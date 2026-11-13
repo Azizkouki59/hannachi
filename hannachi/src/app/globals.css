@@ -22,12 +22,12 @@
   .btn-ghost-light { @apply btn border border-white/25 text-white hover:border-white/60 hover:bg-white/10; }
   .section { @apply py-20 sm:py-28; }
 
-  /* Premium card — subtle lift, vivid glow on hover */
+  /* Premium card */
   .card {
     @apply rounded-2xl border border-primary/10 bg-white shadow-card transition-all duration-300;
-    &:hover {
-      @apply -translate-y-1 shadow-card-hover border-accent/20;
-    }
+  }
+  .card:hover {
+    @apply -translate-y-1 shadow-card-hover border-accent/20;
   }
 
   /* Pill badge */
@@ -40,16 +40,74 @@
   .glass { @apply rounded-2xl border border-white/10 bg-white/10 backdrop-blur-xl; }
 }
 
-/* ── Custom keyframes ── */
+/* ── Custom keyframes & SkillLoop-inspired effects ── */
 @keyframes rise    { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
 @keyframes fade-in { from { opacity: 0; }                              to { opacity: 1; }                   }
 @keyframes shimmer { from { background-position: -200% center; }      to { background-position: 200% center; } }
 @keyframes float   { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @keyframes pulse-ring { 0% { transform: scale(.8); opacity: 1; } 100% { transform: scale(2.2); opacity: 0; } }
 
+/* Sweeping light sheen across badges (Inspired by skillloop.tn) */
+@keyframes badge-sheen {
+  0% { transform: translateX(-120%); }
+  35%, 100% { transform: translateX(120%); }
+}
+
+/* Ambient organic drifting orbs (Inspired by skillloop.tn) */
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-30px, 20px) scale(1.08); }
+}
+@keyframes orb-drift-reverse {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -20px) scale(1.12); }
+}
+
+/* Dual live-ping wave */
+@keyframes live-ping {
+  0% { opacity: 0.85; transform: scale(1); }
+  100% { opacity: 0; transform: scale(2.6); }
+}
+
 .hero-rise { animation: rise .75s cubic-bezier(.16,.77,.2,1) both; }
 .fade-in   { animation: fade-in .6s ease both; }
 .float     { animation: float 6s ease-in-out infinite; }
+.orb-drift { animation: orb-drift 14s ease-in-out infinite; }
+.orb-drift-reverse { animation: orb-drift-reverse 18s ease-in-out infinite; }
+.animate-live-ping { animation: live-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+/* Hero badge sheen effect */
+.hero-badge {
+  isolation: isolate;
+  position: relative;
+  overflow: hidden;
+}
+.hero-badge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.45) 50%, transparent 80%);
+  animation: badge-sheen 4.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  pointer-events: none;
+  transform: translateX(-120%);
+}
+
+/* Card peek gradient sheet (Inspired by skillloop.tn card-peek) */
+.card-peek {
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.88) 40%, transparent);
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 2.25rem 1rem 0.85rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.group:hover .card-peek {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* Gradient text shimmer */
 .text-gradient-shimmer {
