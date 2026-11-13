@@ -7,20 +7,22 @@ import { serviceIcons } from "@/components/Illustrations";
 import { PageHeader, ReviewCard, ServiceCard } from "@/components/ui";
 import { services } from "@/data/site";
 
-type Props = { params: { slug: string } };
+type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
 }
 
-export function generateMetadata({ params }: Props): Metadata {
-  const s = services.find((x) => x.slug === params.slug);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const s = services.find((x) => x.slug === slug);
   if (!s) return {};
   return { title: `${s.title} Reparatur Osnabrück`, description: `${s.short} Persönlicher Reparaturservice von Hannachi in Osnabrück.` };
 }
 
-export default function ServicePage({ params }: Props) {
-  const service = services.find((s) => s.slug === params.slug);
+export default async function ServicePage({ params }: Props) {
+  const { slug } = await params;
+  const service = services.find((s) => s.slug === slug);
   if (!service) notFound();
   const Icon = serviceIcons[service.slug];
   const others = services.filter((s) => s.slug !== service.slug);

@@ -22,17 +22,11 @@ export function FadeUp({
   className?: string;
   once?: boolean;
 }) {
-  const [mounted, setMounted] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once, margin: "-80px 0px" });
-
-  useEffect(() => { setMounted(true); }, []);
-
   return (
     <motion.div
-      ref={ref}
-      initial={mounted ? { opacity: 0, y: 32 } : false}
-      animate={!mounted ? { opacity: 1, y: 0 } : (isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 })}
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once, margin: "-80px 0px" }}
       transition={{ duration: 0.7, delay, ease: smooth }}
       className={className}
     >
@@ -61,18 +55,12 @@ export function StaggerContainer({
   children: ReactNode;
   className?: string;
 }) {
-  const [mounted, setMounted] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px 0px" });
-
-  useEffect(() => { setMounted(true); }, []);
-
   return (
     <motion.div
-      ref={ref}
       variants={containerVariants}
-      initial={mounted ? "hidden" : false}
-      animate={!mounted ? "visible" : (isInView ? "visible" : "hidden")}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-60px 0px" }}
       className={className}
     >
       {children}

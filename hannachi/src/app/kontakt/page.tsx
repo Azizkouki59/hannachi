@@ -38,13 +38,18 @@ const deviceBySlug: Record<string, string> = {
   anderes: "Anderes Gerät (Sonstiges)",
 };
 
-export default function Kontakt({ searchParams }: { searchParams: { geraet?: string } }) {
-  const param = searchParams.geraet?.trim().toLowerCase();
+export default async function Kontakt({
+  searchParams,
+}: {
+  searchParams: Promise<{ geraet?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const param = resolvedSearchParams.geraet?.trim().toLowerCase();
   let defaultDevice = "";
   if (param && deviceBySlug[param]) {
     defaultDevice = deviceBySlug[param];
-  } else if (searchParams.geraet) {
-    defaultDevice = searchParams.geraet.trim();
+  } else if (resolvedSearchParams.geraet) {
+    defaultDevice = resolvedSearchParams.geraet.trim();
   }
   return (
     <>
